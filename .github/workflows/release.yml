@@ -1,0 +1,29 @@
+name: Release
+on:
+  push:
+    branches:
+      - main
+jobs:
+  Release:
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, '#major') || contains(github.event.head_commit.message, '#minor') || contains(github.event.head_commit.message, '#patch')
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: '0'
+
+    - name: Bump version and push tag
+      uses: anothrNick/github-tag-action@1.67.0
+      id: tag_version
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+        WITH_V: true
+        RELEASE_BRANCHES: main
+        
+    - name: Release New Version
+      uses: ncipollo/release-action@v1
+      with:
+        bodyFile: "changelog.md"
+        token: ${{ secrets.PAT_TOKEN }}
+        tag: ${{ steps.tag_version.outputs.new_tag }}
+        name: ${{ steps.tag_version.outputs.new_tag }}

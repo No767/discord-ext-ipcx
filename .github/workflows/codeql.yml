@@ -1,0 +1,57 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches:
+      - main
+    
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: '36 7 * * 0'
+
+jobs:
+  Analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      id: setup-python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Set up Poetry
+      uses: Gr1N/setup-poetry@v8
+
+    - name: Cache Poetry
+      id: cache-poetry
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pypoetry/virtualenvs
+        key: ${{ runner.os }}-codeql-python-${{ hashFiles('**/poetry.lock') }}
+
+    - name: Install Poetry Dependencies
+      if: steps.cache-poetry.outputs.cache-hit != 'true'
+      run: |
+        poetry install
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: python
+        setup-python-dependencies: false
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+      with:
+        upload: true
