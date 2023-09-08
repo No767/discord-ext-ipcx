@@ -20,11 +20,22 @@ author = "Noelle"
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ["sphinx.ext.autodoc", "sphinx.ext.napoleon", "sphinx_copybutton"]
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.napoleon",
+    "sphinx_copybutton",
+    "sphinx.ext.intersphinx",
+]
 
 templates_path = ["_templates"]
 exclude_patterns = []
 
+
+intersphinx_mapping = {
+    "aiohttp": ("https://docs.aiohttp.org/en/stable/", None),
+    "python": ("https://docs.python.org/3", None),
+    "discord": ("https://discordpy.readthedocs.io/en/latest", None),
+}
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
