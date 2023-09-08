@@ -2,6 +2,10 @@
 
 # discord-ext-ipcx
 
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/discord-ext-ipcx?logo=python&logoColor=white&label=Python)](https://pypi.org/project/discord-ext-ipcx/) [![CodeQL](https://github.com/No767/discord-ext-ipcx/actions/workflows/codeql.yml/badge.svg)](https://github.com/No767/discord-ext-ipcx/actions/workflows/codeql.yml) [![Build](https://github.com/No767/discord-ext-ipcx/actions/workflows/build.yml/badge.svg)](https://github.com/No767/discord-ext-ipcx/actions/workflows/build.yml) [![Lint](https://github.com/No767/discord-ext-ipcx/actions/workflows/lint.yml/badge.svg)](https://github.com/No767/discord-ext-ipcx/actions/workflows/lint.yml) [![PyPI - License](https://img.shields.io/pypi/l/discord-ext-ipcx?logo=github&logoColor=white&label=License)](https://github.com/No767/discord-ext-ipcx/blob/main/LICENSE) [![PyPI - Version](https://img.shields.io/pypi/v/discord-ext-ipcx?logo=pypi&logoColor=white&label=Version&link=https%3A%2F%2Fpypi.org%2Fproject%2Fdiscord-ext-ipcx%2F)](https://pypi.org/project/discord-ext-ipcx/)
+
+
+
 An maintained discord.py extension for inter-process communication
 
 <div align=left>

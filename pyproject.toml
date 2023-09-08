@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "discord-ext-ipcx"
-version = "0.1.0"
+version = "0.1.1"
 description = "Maintained and updated version of discord-ext-ipc for discord.py"
 authors = ["No767 <73260931+No767@users.noreply.github.com>"]
 license = "Apache-2.0"
