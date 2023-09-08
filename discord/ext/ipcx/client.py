@@ -1,12 +1,12 @@
 import asyncio
 import logging
+from typing import Any, Optional
 
 import aiohttp
 
 from .errors import NotConnectedError
 
 log = logging.getLogger(__name__)
-from typing import Any, Optional
 
 
 class Client:
