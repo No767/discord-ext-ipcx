@@ -1,5 +1,5 @@
 import logging
-from typing import List, Optional
+from typing import Optional
 
 import aiohttp.web
 
@@ -100,8 +100,6 @@ class Server:
         self.multicast_port = multicast_port
 
         self.endpoints = {}
-
-        self.server_lists: List[aiohttp.web.AppRunner] = []
 
     def route(self, name=None):
         """Used to register a coroutine as an endpoint when you have
