@@ -2,10 +2,11 @@ import asyncio
 import logging
 
 import aiohttp
+
 from .errors import NotConnectedError
 
 log = logging.getLogger(__name__)
-from typing import Optional, Any
+from typing import Any, Optional
 
 
 class Client:
@@ -24,7 +25,13 @@ class Client:
         The secret key for your IPC server. Must match the server secret_key or requests will not go ahead, defaults to None
     """
 
-    def __init__(self, host: str="localhost", port: Optional[int] = None, multicast_port: int = 20000, secret_key: Optional[str] = None):
+    def __init__(
+        self,
+        host: str = "localhost",
+        port: Optional[int] = None,
+        multicast_port: int = 20000,
+        secret_key: Optional[str] = None,
+    ):
         self.loop = asyncio.get_event_loop()
 
         self.secret_key = secret_key
@@ -39,7 +46,9 @@ class Client:
 
     @property
     def url(self):
-        return "ws://{0.host}:{1}".format(self, self.port if self.port else self.multicast_port)
+        return "ws://{0.host}:{1}".format(
+            self, self.port if self.port else self.multicast_port
+        )
 
     async def init_sock(self) -> aiohttp.ClientWebSocketResponse:
         """Attempts to connect to the server
@@ -76,7 +85,9 @@ class Client:
             port_data = recv.json()
             self.port = port_data["port"]
 
-        websocket = await self.session.ws_connect(self.url, autoping=False, autoclose=False)
+        websocket = await self.session.ws_connect(
+            self.url, autoping=False, autoclose=False
+        )
         log.info("Client connected to %s", self.url)
 
         return websocket
@@ -94,8 +105,7 @@ class Client:
         log.info("Requesting IPC Server for %r with %r", endpoint, kwargs)
         if not self.websocket:
             self.websocket = await self.init_sock()
-            
- 
+
         payload = {
             "endpoint": endpoint,
             "data": kwargs,

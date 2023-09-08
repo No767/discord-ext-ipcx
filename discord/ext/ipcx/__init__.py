@@ -2,10 +2,12 @@ from typing import Literal, NamedTuple
 
 # Thank you Umbra for pointing these out as public classes
 # Idea comes from Soheab on the dpy server
-from .client import Client as Client
-from .server import Server as Server, route as route
+from .server import Server as Server
+from .server import route as route
 
 __all__ = ["Server", "route"]
+
+
 class VersionInfo(NamedTuple):
     major: int
     minor: int

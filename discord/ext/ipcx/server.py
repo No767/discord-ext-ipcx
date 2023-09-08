@@ -1,11 +1,11 @@
 import logging
+from typing import List, Optional
 
 import aiohttp.web
+
 from discord.ext import commands
-from typing import List, Optional
+
 from .errors import JSONEncodeError
-
-
 
 log = logging.getLogger(__name__)
 
@@ -79,11 +79,11 @@ class Server:
     def __init__(
         self,
         bot: commands.Bot,
-        host: str ="localhost",
-        port: int =8765,
-        secret_key: Optional[str]=None,
-        do_multicast: bool=True,
-        multicast_port: int =20000,
+        host: str = "localhost",
+        port: int = 8765,
+        secret_key: Optional[str] = None,
+        do_multicast: bool = True,
+        multicast_port: int = 20000,
     ):
         self.bot = bot
         self.loop = bot.loop
@@ -100,7 +100,7 @@ class Server:
         self.multicast_port = multicast_port
 
         self.endpoints = {}
-        
+
         self.server_lists: List[aiohttp.web.AppRunner] = []
 
     def route(self, name=None):
@@ -152,7 +152,9 @@ class Server:
             headers = request.get("headers")
 
             if not headers or headers.get("Authorization") != self.secret_key:
-                log.info("Received unauthorized request (Invalid or no token provided).")
+                log.info(
+                    "Received unauthorized request (Invalid or no token provided)."
+                )
                 response = {"error": "Invalid or no token provided.", "code": 403}
             else:
                 if not endpoint or endpoint not in self.endpoints:
@@ -244,7 +246,9 @@ class Server:
 
             await websocket.send_json(response)
 
-    async def _start(self, application: aiohttp.web.Application, port: int) -> aiohttp.web.AppRunner:
+    async def _start(
+        self, application: aiohttp.web.Application, port: int
+    ) -> aiohttp.web.AppRunner:
         """Start both servers"""
         runner = aiohttp.web.AppRunner(application)
         await runner.setup()
@@ -259,18 +263,19 @@ class Server:
 
         self._server = aiohttp.web.Application()
         self._server.on_shutdown.append(self._stop)
-        self._server.router.add_route("GET", "/", self.handle_accept) # type: ignore
+        self._server.router.add_route("GET", "/", self.handle_accept)  # type: ignore
 
         if self.do_multicast:
             self._multicast_server = aiohttp.web.Application()
             self._server.on_shutdown.append(self._stop)
-            self._multicast_server.router.add_route("GET", "/", self.handle_multicast) # type: ignore
+            self._multicast_server.router.add_route("GET", "/", self.handle_multicast)  # type: ignore
 
-            self.server_lists.append(await self._start(self._multicast_server, self.multicast_port))
+            self.server_lists.append(
+                await self._start(self._multicast_server, self.multicast_port)
+            )
 
         self.server_lists.append(await self._start(self._server, self.port))
-        
+
     async def _stop(self, app: aiohttp.web.Application) -> None:
         """Stops the IPC server"""
         await app.shutdown()
-    
