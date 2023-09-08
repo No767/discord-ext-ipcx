@@ -5,7 +5,7 @@ description = "Maintained and updated version of discord-ext-ipc for discord.py"
 authors = ["No767 <73260931+No767@users.noreply.github.com>"]
 license = "Apache-2.0"
 readme = "README.md"
-packages = [{ include = "discord/ext/ipcx"}]
+packages = [{ include = "discord/ext/ipcx" }]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"
