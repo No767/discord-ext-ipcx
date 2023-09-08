@@ -69,7 +69,7 @@ class Client:
             self.multicast = await self.session.ws_connect(self.url, autoping=False)
 
             payload = {"connect": True, "headers": {"Authorization": self.secret_key}}
-            log.debug("Multicast Server < %r", payload)
+            log.debug("Multicast Server < %r", payload["connect"])
 
             await self.multicast.send_json(payload)
             recv = await self.multicast.receive()
@@ -114,7 +114,7 @@ class Client:
 
         await self.websocket.send_json(payload)
 
-        log.debug("Client > %r", payload)
+        log.debug("Client payload sent > %s", payload["endpoint"])
 
         recv = await self.websocket.receive()
 

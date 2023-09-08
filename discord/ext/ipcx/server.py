@@ -257,25 +257,23 @@ class Server:
         await site.start()
         return runner
 
+    async def _stop(self, app: aiohttp.web.Application) -> None:
+        """Stops the IPC server"""
+        await app.shutdown()
+
     async def start(self) -> None:
         """Starts the IPC server."""
         self.bot.dispatch("ipc_ready")
 
         self._server = aiohttp.web.Application()
-        self._server.on_shutdown.append(self._stop)
+        self._server.on_cleanup.append(self._stop)
         self._server.router.add_route("GET", "/", self.handle_accept)  # type: ignore
 
         if self.do_multicast:
             self._multicast_server = aiohttp.web.Application()
-            self._server.on_shutdown.append(self._stop)
+            self._server.on_cleanup.append(self._stop)
             self._multicast_server.router.add_route("GET", "/", self.handle_multicast)  # type: ignore
 
-            self.server_lists.append(
-                await self._start(self._multicast_server, self.multicast_port)
-            )
+            await self._start(self._multicast_server, self.multicast_port)
 
-        self.server_lists.append(await self._start(self._server, self.port))
-
-    async def _stop(self, app: aiohttp.web.Application) -> None:
-        """Stops the IPC server"""
-        await app.shutdown()
+        await self._start(self._server, self.port)
