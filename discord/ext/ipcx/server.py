@@ -222,7 +222,7 @@ class Server:
         request: :class:`~aiohttp.web.Request`
             The request made by the client, parsed by aiohttp.
         """
-        log.info("Initiating Multicast Server.")
+        log.debug("Initiating Multicast Server.")
         websocket = aiohttp.web.WebSocketResponse()
         await websocket.prepare(request)
 
