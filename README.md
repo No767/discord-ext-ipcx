@@ -20,9 +20,10 @@ python3 -m pip install discord-ext-ipcx
 py -m pip install discord-ext-ipcx
 ```
 
-## Examples
+## Resources
 
-Examples can be found [here](thedocs)
+- [Documentation](https://discord-ext-ipcx.readthedocs.io)
+- [Examples](https://github.com/No767/discord-ext-ipcx/tree/main/examples)
 
 ## Motivation and differences
 
