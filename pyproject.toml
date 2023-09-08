@@ -1,0 +1,52 @@
+[tool.poetry]
+name = "discord-ext-ipcx"
+version = "0.0.1"
+description = "Maintained and updated version of discord-ext-ipc for discord.py"
+authors = ["No767 <73260931+No767@users.noreply.github.com>"]
+license = "Apache-2.0"
+readme = "README.md"
+packages = [{ include = "discord/ext/ipcx"}]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<4.0"
+discord-py = ">=2,<3"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.4.0"
+pyright = "^1.1.326"
+ruff = "^0.0.287"
+python-dotenv = "^1.0.0"
+quart = "^0.18.4"
+
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "7.1.2"
+sphinx-autobuild = "^2021.3.14"
+furo = "^2023.8.19"
+sphinx-copybutton = "^0.5.2"
+
+[tool.isort]
+profile = 'black'
+
+[tool.pyright]
+include = ["discord/ext/ipcx/**"]
+exclude = [
+    "**/__pycache__", 
+    "**/.mypy_cache", 
+    "**/.dmpypy.json", 
+    "docs",
+]
+reportMissingImports = true
+typeCheckingMode = "basic"
+reportUnnecessaryTypeIgnoreComment = "warning"
+
+[tool.bandit]
+skips = ["B311", "B101"]
+
+[tool.ruff]
+ignore = ["E501", "N999", "E402"]
+select = ["E", "F", "N", "ASYNC", "S", "ERA"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
