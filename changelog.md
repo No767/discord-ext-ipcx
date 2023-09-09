@@ -1,17 +1,18 @@
-# discord-ext-ipcx v0.1.0
+# discord-ext-ipcx v0.1.1
 
-First stable release hopefully...
+Bugfix release to update and clean out some code
 
 ## Added
 
-- Examples that use `setup_hook` instead
+- None
 
 ## Changed
 
-- Make the `start` function now a coroutine
-- Fix and touchup the codebase to work with the most recent versions of discord.py
-- Updated examples
+- Adjust docs config
+- Add some documentation with modules
+- Use `on_cleanup` instead of `on_shutdown` for stopping apps
+- Remove clear fix logging
 
 ## Removed
 
-- None
+- Remove logging for clear text info
