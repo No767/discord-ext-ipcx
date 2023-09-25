@@ -14,7 +14,7 @@ discord-py = ">=2,<3"
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.4.0"
 pyright = "^1.1.326"
-ruff = ">=0.0.287,<0.0.291"
+ruff = ">=0.0.287,<0.0.292"
 python-dotenv = "^1.0.0"
 quart = "^0.18.4"
 
