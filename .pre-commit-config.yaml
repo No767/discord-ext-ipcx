@@ -24,7 +24,7 @@ repos:
     rev: v2.2.0
     hooks:
     -   id: autoflake
-        args: ["--in-place", "--remove-unused-variables", "--remove-all-unused-imports", "--recursive"]
+        args: ["--in-place", "--remove-unused-variables", "--recursive"]
         name: AutoFlake
         description: "Format with AutoFlake"
         stages: [commit]
