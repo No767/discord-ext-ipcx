@@ -1,8 +1,10 @@
 import asyncio
 import logging
-from typing import Any, Optional
+from types import TracebackType
+from typing import Any, Optional, Type
 
 import aiohttp
+from typing_extensions import Self
 
 from .errors import NotConnectedError
 
@@ -43,6 +45,17 @@ class Client:
         self.multicast = None
 
         self.multicast_port = multicast_port
+
+    async def __aenter__(self) -> Self:
+        return self
+
+    async def __aexit__(
+        self,
+        exc_type: Optional[Type[BaseException]],
+        exc_val: Optional[BaseException],
+        exc_tb: Optional[TracebackType],
+    ) -> None:
+        await self.session.close()
 
     @property
     def url(self):
