@@ -47,7 +47,7 @@ Issues = "https://github.com/No767/discord-ext-ipcx/issues"
 
 [project.optional-dependencies]
 docs = [
-    "sphinx==7.1.2",
+    "sphinx==7.2.6",
     "sphinx-autobuild>=2021.3.14",
     "furo>=2023.8.19",
     "sphinx-copybutton>=0.5.2"
