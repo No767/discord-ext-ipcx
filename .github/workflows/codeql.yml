@@ -24,26 +24,25 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Set up Python 3.11
+    - name: Set up Python 3.12
       id: setup-python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11'
+        python-version: '3.12'
         
-    - name: Set up Poetry
-      uses: Gr1N/setup-poetry@v8
-
-    - name: Cache Poetry
-      id: cache-poetry
+    - name: Cache Pip
       uses: actions/cache@v3
+      id: cache-pip
       with:
-        path: ~/.cache/pypoetry/virtualenvs
-        key: ${{ runner.os }}-codeql-python-${{ hashFiles('**/poetry.lock') }}
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
 
-    - name: Install Poetry Dependencies
-      if: steps.cache-poetry.outputs.cache-hit != 'true'
+    - name: Install Pip
+      if: steps.cache-pip.outputs.cache-hit != 'true'
       run: |
-        poetry install
+        pip install .
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v2

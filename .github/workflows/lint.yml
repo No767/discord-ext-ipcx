@@ -26,26 +26,25 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.version }}
-
-      - name: Set up Poetry
-        uses: Gr1N/setup-poetry@v8
-
-      - name: Cache Poetry
-        id: cache-poetry
+          
+      - name: Cache Pip
         uses: actions/cache@v3
+        id: cache-pip
         with:
-          path: ~/.cache/pypoetry/virtualenvs
-          key: ${{ runner.os }}-poetry-lint-${{ matrix.version }}-${{ hashFiles('**/poetry.lock') }}
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ matrix.version }}-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-${{ matrix.version }}-
 
-      - name: Install Poetry Dependencies
-        if: steps.cache-poetry.outputs.cache-hit != 'true'
+      - name: Install Pip
+        if: steps.cache-pip.outputs.cache-hit != 'true'
         run: |
-          poetry install --with dev
+          pip install "".[dev]"
           
       - name: Run Pyright
         run: |
-          poetry run pyright discord/ext/ipcx
+          pyright discord/ext/ipcx
 
       - name: Run Ruff
         run: |
-          poetry run ruff discord/ext/ipcx
+          ruff discord/ext/ipcx
