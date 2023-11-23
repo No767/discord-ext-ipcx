@@ -7,13 +7,13 @@ API Reference
 Client
 ------
 
-.. autoclass:: Client
+.. autoclass:: discord.ext.ipcx.Client
     :members:
 
 Server
 ------
 
-.. autoclass:: Server
+.. autoclass:: discord.ext.ipcx.Server
      :members:
      
-..  autofunction:: route
+..  autofunction:: discord.ext.ipcx.route
