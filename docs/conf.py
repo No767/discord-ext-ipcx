@@ -9,6 +9,9 @@
 import os
 import sys
 
+# Location of Sphinx files
+sys.path.insert(0, os.path.abspath("./../discord/ext/ipcx"))
+
 sys.path.insert(0, os.path.abspath("../"))
 sys.path.insert(0, os.path.abspath("../discord/ext/ipcx"))
 sys.path.insert(0, os.path.abspath("discord/ext/ipcx"))
