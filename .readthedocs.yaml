@@ -6,7 +6,7 @@ build:
     python: "3.11"
   commands:
    - pip install sphinx==7.1.2 furo>=2023.8.19 sphinx-copybutton>=0.5.2
-   - sphinx -T -E -b html -d $READTHEDOCS_OUTPUT/doctrees -D language=en . $READTHEDOCS_OUTPUT/html
+   - python -m sphinx -T -E -b html -d $READTHEDOCS_OUTPUT/doctrees -D language=en . $READTHEDOCS_OUTPUT/html
 
 sphinx:
    configuration: docs/conf.py
