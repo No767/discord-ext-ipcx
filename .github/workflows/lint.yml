@@ -26,18 +26,8 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.version }}
-          
-      - name: Cache Pip
-        uses: actions/cache@v3
-        id: cache-pip
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ matrix.version }}-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-${{ matrix.version }}-
 
-      - name: Install Pip
-        if: steps.cache-pip.outputs.cache-hit != 'true'
+      - name: Install dependencies
         run: |
           pip install ".[dev]"
           
