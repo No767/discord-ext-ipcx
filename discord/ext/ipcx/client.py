@@ -3,7 +3,6 @@ import logging
 from typing import Any, Optional
 
 import aiohttp
-from typing_extensions import Self
 
 from .errors import NotConnectedError
 

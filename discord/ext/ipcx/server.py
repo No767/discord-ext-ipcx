@@ -264,12 +264,10 @@ class Server:
         self.bot.dispatch("ipc_ready")
 
         self._server = aiohttp.web.Application()
-        # self._server.on_cleanup.append(self._stop)
         self._server.router.add_route("GET", "/", self.handle_accept)  # type: ignore
 
         if self.do_multicast:
             self._multicast_server = aiohttp.web.Application()
-            # self._server.on_cleanup.append(self._stop)
             self._multicast_server.router.add_route("GET", "/", self.handle_multicast)  # type: ignore
 
             await self._start(self._multicast_server, self.multicast_port)

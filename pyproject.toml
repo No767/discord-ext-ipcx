@@ -46,10 +46,12 @@ reportUnnecessaryTypeIgnoreComment = "warning"
 
 [tool.bandit]
 skips = ["B311", "B101"]
+exclude_dirs = ["examples/**"]
 
 [tool.ruff]
 ignore = ["E501", "N999", "E402"]
 select = ["E", "F", "N", "ASYNC", "S", "ERA"]
+exclude = ["examples/**"]
 
 [build-system]
 requires = ["poetry-core"]
