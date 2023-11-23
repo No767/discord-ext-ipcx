@@ -1,0 +1,48 @@
+name: Build and Publish
+on:
+  push:
+    paths-ignore:
+      - "**.md"
+    tags:
+      - 'v*'
+
+jobs:
+  
+  Build:
+    runs-on: ubuntu-latest
+    
+    env:
+      name: pypi
+      url: https://pypi.org/p/discord-ext-ipcx
+
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Checkout Repository  
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        id: setup-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+      
+      - name: Install Project
+        run: |
+          pip install .
+
+      - name: Install Build
+        run: |
+          pip install build
+
+      - name: Build Packages
+        run: |
+          python -m build
+
+      - name: Publish Packages to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+    
+
+      
+      

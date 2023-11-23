@@ -1,6 +1,4 @@
-# discord-ext-ipcx v0.1.1
-
-Bugfix release to update and clean out some code
+# v0.2.0
 
 ## Added
 
@@ -8,11 +6,10 @@ Bugfix release to update and clean out some code
 
 ## Changed
 
-- Adjust docs config
-- Add some documentation with modules
-- Use `on_cleanup` instead of `on_shutdown` for stopping apps
-- Remove clear fix logging
+- Fixed bug in `discord.ext.ipcx.client` where `aiohttp.ClientSession` would not be properly closed
+- Internally build using `setuptools` instead of `poetry`
+- Updated pre-commit hooks
 
 ## Removed
 
-- Remove logging for clear text info
+- None

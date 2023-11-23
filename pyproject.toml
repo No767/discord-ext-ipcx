@@ -1,30 +1,73 @@
-[tool.poetry]
+[project]
 name = "discord-ext-ipcx"
-version = "0.1.1"
-description = "Maintained and updated version of discord-ext-ipc for discord.py"
-authors = ["No767 <73260931+No767@users.noreply.github.com>"]
-license = "Apache-2.0"
+description = "Maintained and updated version of discord-ext-ipc for discord.py v2"
+version = "0.2.0"
+authors = [
+    { name="No767", email="73260931+No767@users.noreply.github.com"}
+]
+maintainers = [
+    { name="No767", email="73260931+No767@users.noreply.github.com"}
+]
+license = {file = "LICENSE"}
 readme = "README.md"
-packages = [{ include = "discord/ext/ipcx" }, { include = "LICENSE" }]
+dynamic = ["dependencies"]
+requires-python = ">=3.8,<4.0"
+keywords = [
+    "discord.py", 
+    "asyncio", 
+    "networking",
+    "discord-ext-ipcx", 
+    "discord-ext-ipc"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Internet",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+    "Typing :: Typed"
+]
 
-[tool.poetry.dependencies]
-python = ">=3.8,<4.0"
-discord-py = ">=2,<3"
-typing-extensions = ">=4.8.0"
+[project.urls]
+Homepage = "https://github.com/No767/discord-ext-ipcx"
+Documentation = "https://discord-ext-ipcx.readthedocs.io/en/latest/"
+Repository = "https://github.com/No767/discord-ext-ipcx"
+Issues = "https://github.com/No767/discord-ext-ipcx/issues"
 
-[tool.poetry.group.dev.dependencies]
-pre-commit = "^3.4.0"
-pyright = "^1.1.326"
-ruff = ">=0.0.287,<0.1.6"
-python-dotenv = "^1.0.0"
-quart = ">=0.18.4,<0.20.0"
+[project.optional-dependencies]
+docs = [
+    "sphinx==7.1.2",
+    "sphinx-autobuild>=2021.3.14",
+    "furo>=2023.8.19",
+    "sphinx-copybutton>=0.5.2"
+]
 
+dev = [
+    "pre-commit",
+    "pyright",
+    "ruff",
+    "python-dotenv",
+    "quart>=0.18.4,<0.20.0"
+]
 
-[tool.poetry.group.docs.dependencies]
-sphinx = "7.1.2"
-sphinx-autobuild = "^2021.3.14"
-furo = "^2023.8.19"
-sphinx-copybutton = "^0.5.2"
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools]
+packages = [
+    "discord.ext.ipcx"
+]
 
 [tool.isort]
 profile = 'black'
@@ -54,5 +97,5 @@ select = ["E", "F", "N", "ASYNC", "S", "ERA"]
 exclude = ["examples/**"]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
