@@ -5,9 +5,7 @@ build:
   tools:
     python: "3.11"
   commands:
-   - python -m pip install --upgrade --no-cache-dir pip setuptools sphinx readthedocs-sphinx-ext \
-     && python -m pip install -r docs/requirements.txt \
-     && python -m sphinx -T -E -b html -d $READTHEDOCS_OUTPUT/doctrees -D language=en . $READTHEDOCS_OUTPUT/html
+   - python -m sphinx -T -E -b html -d $READTHEDOCS_OUTPUT/doctrees -D language=en . $READTHEDOCS_OUTPUT/html
 
 sphinx:
    configuration: docs/conf.py
