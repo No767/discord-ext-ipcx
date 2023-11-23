@@ -1,7 +1,6 @@
 import asyncio
 import logging
-from types import TracebackType
-from typing import Any, Optional, Type
+from typing import Any, Optional
 
 import aiohttp
 from typing_extensions import Self
@@ -46,17 +45,6 @@ class Client:
 
         self.multicast_port = multicast_port
 
-    async def __aenter__(self) -> Self:
-        return self
-
-    async def __aexit__(
-        self,
-        exc_type: Optional[Type[BaseException]],
-        exc_val: Optional[BaseException],
-        exc_tb: Optional[TracebackType],
-    ) -> None:
-        await self.session.close()
-
     @property
     def url(self):
         return "ws://{0.host}:{1}".format(
@@ -72,37 +60,42 @@ class Client:
             The websocket connection to the server
         """
         log.debug("Initiating WebSocket connection.")
-        self.session = aiohttp.ClientSession()
 
-        if not self.port:
-            log.debug(
-                "No port was provided - initiating multicast connection at %s.",
-                self.url,
-            )
-            self.multicast = await self.session.ws_connect(self.url, autoping=False)
-
-            payload = {"connect": True, "headers": {"Authorization": self.secret_key}}
-
-            await self.multicast.send_json(payload)
-            recv = await self.multicast.receive()
-
-            log.debug("Multicast Server > %r", recv)
-
-            if recv.type in (aiohttp.WSMsgType.CLOSE, aiohttp.WSMsgType.CLOSED):
-                log.error(
-                    "WebSocket connection unexpectedly closed. Multicast Server is unreachable."
+        # This is done to prevent the "Unhandled closing" issues that happen with aiohttp
+        # This is also what jsk does as well, as more than likely in a quart app, they aren't managing the lifecycle of the app
+        async with aiohttp.ClientSession() as session:
+            if not self.port:
+                log.debug(
+                    "No port was provided - initiating multicast connection at %s.",
+                    self.url,
                 )
-                raise NotConnectedError("Multicast server connection failed.")
+                self.multicast = await session.ws_connect(self.url, autoping=False)
 
-            port_data = recv.json()
-            self.port = port_data["port"]
+                payload = {
+                    "connect": True,
+                    "headers": {"Authorization": self.secret_key},
+                }
 
-        websocket = await self.session.ws_connect(
-            self.url, autoping=False, autoclose=False
-        )
-        log.info("Client connected to %s", self.url)
+                await self.multicast.send_json(payload)
+                recv = await self.multicast.receive()
 
-        return websocket
+                log.debug("Multicast Server > %r", recv)
+
+                if recv.type in (aiohttp.WSMsgType.CLOSE, aiohttp.WSMsgType.CLOSED):
+                    log.error(
+                        "WebSocket connection unexpectedly closed. Multicast Server is unreachable."
+                    )
+                    raise NotConnectedError("Multicast server connection failed.")
+
+                port_data = recv.json()
+                self.port = port_data["port"]
+
+            websocket = await session.ws_connect(
+                self.url, autoping=False, autoclose=False
+            )
+            log.info("Client connected to %s", self.url)
+
+            return websocket
 
     async def request(self, endpoint: str, **kwargs) -> Any:
         """Make a request to the IPC server process.
@@ -144,8 +137,6 @@ class Client:
             log.error(
                 "WebSocket connection unexpectedly closed. IPC Server is unreachable. Attempting reconnection in 5 seconds."
             )
-
-            await self.session.close()
 
             await asyncio.sleep(5)
 
