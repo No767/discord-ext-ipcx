@@ -4,9 +4,12 @@ build:
   os: ubuntu-22.04
   tools:
     python: "3.11"
+  commands:
+    - cd docs
+    - python -m sphinx -T -E -b html -d _build/doctrees -D language=en . $READTHEDOCS_OUTPUT/html
 
 sphinx:
-   configuration: docs/conf.py
+   configuration: conf.py
 
 python:
    install:
