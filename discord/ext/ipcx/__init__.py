@@ -32,7 +32,7 @@ class VersionInfo(NamedTuple):
         return f"{self.major}.{self.minor}.{self.micro}-{self.releaselevel}"
 
 
-version_info = VersionInfo(major=0, minor=1, micro=1, releaselevel="final")
+version_info = VersionInfo(major=0, minor=2, micro=0, releaselevel="final")
 
 # Since this class is always exported, we just want to delete it at the end
 # So others can't use it
