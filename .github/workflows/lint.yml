@@ -39,7 +39,7 @@ jobs:
       - name: Install Pip
         if: steps.cache-pip.outputs.cache-hit != 'true'
         run: |
-          pip install "".[dev]"
+          pip install ".[dev]"
           
       - name: Run Pyright
         run: |
