@@ -14,12 +14,14 @@ discord-ext-ipcx
    examples
    api
 
-discord-ext-ipcx is a maintained, tested version of the now old discord-ext-ipc library for discord.py v2. It strives to maintain the compatibly of ``discord-ext-ipc`` but with some modern upgrades and touch-ups. 
+discord-ext-ipcx is a maintained, tested version of the now old discord-ext-ipc library for discord.py v2. 
+It strives to maintain the compatibly of ``discord-ext-ipc`` but with some modern upgrades and touch-ups. 
 
 Getting Started
 ^^^^^^^^^^^^^^^
 
-Although ``discord-ext-ipcx`` is mostly compatible with the old way of doing things, it is recommended to see the examples in order to know how to use it.
+Although ``discord-ext-ipcx`` is mostly compatible with the old way of doing things, 
+it is recommended to see the examples in order to know how to use it.
 
 :doc:`examples` can be found here.
 

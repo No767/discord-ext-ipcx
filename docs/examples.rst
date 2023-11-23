@@ -1,7 +1,8 @@
 Examples
 ^^^^^^^^
 
-Here are some ways you can use this library in your own bot. Make sure to adjust it to your own bot's needs. For GitHub based examples, please see the `examples directory <https://github.com/No767/discord-ext-ipcx/tree/main/examples>`_
+Here are some ways you can use this library in your own bot. Make sure to adjust it to your own bot's needs. 
+For GitHub based examples, please see the `examples directory <https://github.com/No767/discord-ext-ipcx/tree/main/examples>`_
 
 Basic IPC
 ---------
