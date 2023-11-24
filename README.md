@@ -32,7 +32,7 @@ $ python3 -m pip install -U .
 
 ## Resources
 
-- [Documentation](https://discord-ext-ipcx.readthedocs.io)
+- [Documentation](https://discord-ext-ipcx.readthedocs.io/en/stable)
 - [Examples](https://github.com/No767/discord-ext-ipcx/tree/main/examples)
 
 ## Motivation and differences
