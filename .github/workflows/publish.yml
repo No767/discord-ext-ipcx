@@ -1,16 +1,24 @@
-name: Build and Publish
+name: Publish
 on:
+  # push:
+  #   paths-ignore:
+  #     - "**.md"
+  #   tags:
+  #     - 'v*'
   push:
-    paths-ignore:
-      - "**.md"
-    tags:
-      - 'v*'
+    branches:
+        - main
+
+  workflow_run:
+    workflows: ["Build"]
+    branches: [main]
+    types:
+      - completed
 
 jobs:
   
-  Build:
+  Publish:
     runs-on: ubuntu-latest
-    
     env:
       name: pypi
       url: https://pypi.org/p/discord-ext-ipcx
@@ -19,32 +27,18 @@ jobs:
       id-token: write
 
     steps:
-      - name: Checkout Repository  
-        uses: actions/checkout@v4
-        
-      - name: Set up Python
-        id: setup-python
-        uses: actions/setup-python@v4
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
         with:
-          python-version: '3.12'
-      
-      - name: Install Project
-        run: |
-          pip install .
-
-      - name: Install Build
-        run: |
-          pip install build
-
-      - name: Build Packages
-        run: |
-          python -m build
+          name: artifact
+          path: dist
 
       - name: Publish Packages to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
+          repository-url: https://test.pypi.org/legacy/
     
 
       
