@@ -1,17 +1,16 @@
 [project]
 name = "discord-ext-ipcx"
 description = "Maintained and updated version of discord-ext-ipc for discord.py v2"
-version = "0.2.0"
+version = "0.2.1"
 authors = [
     { name="No767", email="73260931+No767@users.noreply.github.com"}
 ]
 maintainers = [
     { name="No767", email="73260931+No767@users.noreply.github.com"}
 ]
-license = {file = "LICENSE"}
 readme = "README.md"
 dynamic = ["dependencies"]
-requires-python = ">=3.8,<4.0"
+requires-python = ">=3.8"
 keywords = [
     "discord.py", 
     "asyncio", 
