@@ -1,0 +1,40 @@
+name: Build
+on:
+  push:
+    branches:
+        - main
+    # paths-ignore:
+    #   - "**.md"
+    # tags:
+    #   - 'v*'
+
+jobs:
+    Build:
+        runs-on: ubunutu-latest
+
+        steps:
+            - name: Checkout Repository  
+              uses: actions/checkout@v4
+        
+            - name: Set up Python
+              id: setup-python
+              uses: actions/setup-python@v4
+              with:
+                python-version: '3.12'
+                
+            - name: Install Project
+              run: |
+                pip install .
+                
+            - name: Install Build
+              run: |
+                pip install build
+                
+            - name: Build Packages
+              run: |
+                python -m build
+
+            - name: Upload Build
+              uses: actions/upload-artifact@v3
+              with:
+                path: ./dist/*.whl, ./dist/*.tar.gz
