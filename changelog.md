@@ -7,6 +7,7 @@
 ## Changed
 
 - Fixed multiple GH workflows breaking
+- Split workflows and housecleaning
 - Make docs finally work
 
 ## Removed
