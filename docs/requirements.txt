@@ -1,4 +1,4 @@
-sphinx==7.1.2
+sphinx==7.2.6
 furo>=2023.8.19
 sphinx-copybutton>=0.5.2
 discord.py>=2.3.2
