@@ -38,7 +38,7 @@ jobs:
             - name: Upload Build
               uses: actions/upload-artifact@v3
               with:
-                path: ./dist/*.whl, ./dist/*.tar.gz
+                path: dist/*
 
     Publish:
         runs-on: ubuntu-latest
