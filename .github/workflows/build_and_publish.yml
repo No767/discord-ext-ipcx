@@ -46,7 +46,6 @@ jobs:
         env:
           name: pypi
           url: https://pypi.org/p/discord-ext-ipcx
-    
         permissions:
           id-token: write
     
