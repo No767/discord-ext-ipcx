@@ -7,9 +7,7 @@ from discord.ext import commands, ipcx
 class MyBot(commands.Bot):
     def __init__(self, intents: discord.Intents, *args, **kwargs):
         super().__init__(command_prefix="!", intents=intents, *args, **kwargs)
-        self.ipc = ipcx.Server(
-            self, secret_key="my_secret_key"  # nosec
-        )  # Creating our IPC server
+        self.ipc = ipcx.Server(self, secret_key="my_secret_key")  # nosec
         self.log = logging.getLogger("discord.ext.ipcx")
 
     async def setup_hook(self):

@@ -4,8 +4,8 @@ from discord.ext import ipcx
 
 app = Quart(__name__)
 ipc_client = ipcx.Client(
-    secret_key="my_secret_key"  # nosec
-)  # secret_key must be the same as your server
+    secret_key="my_secret_key"  # nosec # secret_key must be the same as your server
+)
 
 
 @app.route("/")
@@ -15,6 +15,11 @@ async def index():
     )  # get the member count of server with ID 12345678
 
     return str(member_count)  # display member count
+
+
+@app.after_serving
+async def close_session():
+    await ipc_client.close()
 
 
 if __name__ == "__main__":

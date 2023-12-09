@@ -12,6 +12,7 @@ Basic IPC
 .. code-block:: python
     
     import logging
+
     import discord
     from discord.ext import commands, ipcx
 
@@ -21,7 +22,7 @@ Basic IPC
             super().__init__(command_prefix="!", intents=intents, *args, **kwargs)
             self.ipc = ipcx.Server(
                 self, secret_key="my_secret_key"  # nosec
-            )  # Creating our IPC server
+            )
             self.log = logging.getLogger("discord.ext.ipcx")
 
         async def setup_hook(self):
@@ -57,6 +58,7 @@ Basic IPC
     if __name__ == "__main__":
         bot.run(TOKEN)
 
+
 ``webserver.py``
 
 .. code-block:: python
@@ -67,8 +69,8 @@ Basic IPC
 
     app = Quart(__name__)
     ipc_client = ipcx.Client(
-        secret_key="my_secret_key"  # nosec
-    )  # secret_key must be the same as your server
+        secret_key="my_secret_key"  # nosec # secret_key must be the same as your server
+    )
 
 
     @app.route("/")
@@ -79,9 +81,13 @@ Basic IPC
 
         return str(member_count)  # display member count
 
+    @app.after_serving
+    async def close_session():
+        await ipc_client.close()
 
     if __name__ == "__main__":
         app.run()
+
 
 Cog-based IPC
 -------------
@@ -137,7 +143,7 @@ Cog-based IPC
             super().__init__(command_prefix="!", intents=intents, *args, **kwargs)
             self.ipc = ipcx.Server(
                 self, secret_key="my_secret_key"  # nosec
-            )  # Creating our IPC server
+            )
             self.log = logging.getLogger("discord.ext.ipcx")
 
         async def setup_hook(self):
@@ -164,6 +170,7 @@ Cog-based IPC
     if __name__ == "__main__":
         bot.run(TOKEN)
 
+
 ``webserver.py``
 
 .. code-block:: python
@@ -174,8 +181,8 @@ Cog-based IPC
 
     app = Quart(__name__)
     ipc_client = ipcx.Client(
-        secret_key="my_secret_key"  # nosec
-    )  # secret_key must be the same as your server
+        secret_key="my_secret_key"  # nosec # secret_key must be the same as your server
+    )
 
 
     @app.route("/")
@@ -186,6 +193,9 @@ Cog-based IPC
 
         return str(member_count)  # display member count
 
+    @app.after_serving
+    async def close_session():
+        await ipc_client.close()
 
     if __name__ == "__main__":
         app.run()
