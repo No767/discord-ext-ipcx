@@ -1,7 +1,7 @@
 [project]
 name = "discord-ext-ipcx"
 description = "Maintained and updated version of discord-ext-ipc for discord.py v2"
-version = "0.2.1"
+version = "0.2.2"
 authors = [
     { name="No767", email="73260931+No767@users.noreply.github.com"}
 ]

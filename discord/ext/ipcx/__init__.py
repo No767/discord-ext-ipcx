@@ -12,7 +12,7 @@ __title__ = "discord-ext-ipcx"
 __author__ = "Ext-Creators, No767"
 __license__ = "Apache-2.0"
 __copyright__ = "(c) 2020-present Ext-Creators, No767"
-__version__ = "0.2.1"
+__version__ = "0.2.2"
 
 from typing import Literal, NamedTuple
 
@@ -32,7 +32,7 @@ class VersionInfo(NamedTuple):
         return f"{self.major}.{self.minor}.{self.micro}-{self.releaselevel}"
 
 
-version_info = VersionInfo(major=0, minor=2, micro=1, releaselevel="final")
+version_info = VersionInfo(major=0, minor=2, micro=2, releaselevel="final")
 
 # Since this class is always exported, we just want to delete it at the end
 # So others can't use it
