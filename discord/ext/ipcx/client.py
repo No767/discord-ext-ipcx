@@ -3,8 +3,9 @@ import logging
 from typing import Any, Optional
 
 import aiohttp
+from aiohttp.http_websocket import WSCloseCode
 
-from .errors import NotConnectedError
+from .errors import NotConnectedError, WebSocketClosedError
 
 log = logging.getLogger(__name__)
 
@@ -150,5 +151,13 @@ class Client:
                 await asyncio.sleep(5)
 
                 return await self.request(endpoint, **kwargs)
+
+            if recv.type == aiohttp.WSMsgType.CLOSE:
+                close_code = recv.data
+                reason = WSCloseCode(close_code).name
+
+                raise WebSocketClosedError(
+                    f"WebSocket connection unexpectedly closed with code: {close_code} ({reason})"
+                )
 
             return recv.json()
