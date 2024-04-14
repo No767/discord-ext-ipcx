@@ -72,6 +72,8 @@ class Server:
         Turn multicasting on/off. Defaults to True
     multicast_port: int
         The port to run the multicasting server on. Defaults to 20000
+    max_msg_size: Optional[int]
+        The maximum message size in bytes. Defaults to None
     """
 
     ROUTES = {}
@@ -84,6 +86,7 @@ class Server:
         secret_key: Optional[str] = None,
         do_multicast: bool = True,
         multicast_port: int = 20000,
+        max_msg_size: int | None = None,
     ):
         self.bot = bot
         self.loop = bot.loop
@@ -98,6 +101,8 @@ class Server:
 
         self.do_multicast = do_multicast
         self.multicast_port = multicast_port
+
+        self.max_msg_size = max_msg_size
 
         self.endpoints = {}
 
@@ -137,10 +142,15 @@ class Server:
         """
         self.update_endpoints()
 
-        websocket = aiohttp.web.WebSocketResponse()
+        websocket = aiohttp.web.WebSocketResponse(max_msg_size=self.max_msg_size)
         await websocket.prepare(request)
 
         async for message in websocket:
+            if message.type == aiohttp.WSMsgType.ERROR and (
+                exception := websocket.exception()
+            ):
+                raise exception
+
             request = message.json()
 
             log.debug("IPC Server < %r", request)
