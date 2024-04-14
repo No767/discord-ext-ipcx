@@ -19,3 +19,7 @@ class JSONEncodeError(IPCError):
 
 class NotConnectedError(IPCError):
     """Raised upon websocket not connected"""
+
+
+class WebSocketClosedError(IPCError):
+    """Raised upon websocket being closed"""
