@@ -280,7 +280,9 @@ class Server:
         if self.do_multicast:
             self._multicast_server = aiohttp.web.Application()
             self._multicast_server.router.add_route(
-                "GET", "/", self.handle_multicast # type: ignore
+                "GET",
+                "/",
+                self.handle_multicast,  # type: ignore
             )
 
             await self._start(self._multicast_server, self.multicast_port)
