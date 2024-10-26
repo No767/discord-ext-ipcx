@@ -79,7 +79,9 @@ class Client:
                 self.url,
             )
             session = await self._get_session()
-            async with session.ws_connect(self.url, autoping=False) as multicast:
+            async with session.ws_connect(
+                self.url, autoping=False
+            ) as multicast:
                 payload = {
                     "connect": True,
                     "headers": {"Authorization": self.secret_key},
@@ -90,11 +92,16 @@ class Client:
 
                 log.debug("Multicast Server > %r", recv)
 
-                if recv.type in (aiohttp.WSMsgType.CLOSE, aiohttp.WSMsgType.CLOSED):
+                if recv.type in (
+                    aiohttp.WSMsgType.CLOSE,
+                    aiohttp.WSMsgType.CLOSED,
+                ):
                     log.error(
                         "WebSocket connection unexpectedly closed. Multicast Server is unreachable."
                     )
-                    raise NotConnectedError("Multicast server connection failed.")
+                    raise NotConnectedError(
+                        "Multicast server connection failed."
+                    )
 
                 port_data = recv.json()
                 self.port = port_data["port"]
@@ -119,7 +126,6 @@ class Client:
         async with session.ws_connect(
             self.url, autoping=False, autoclose=False
         ) as websocket:
-
             payload = {
                 "endpoint": endpoint,
                 "data": kwargs,
