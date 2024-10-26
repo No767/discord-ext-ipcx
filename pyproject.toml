@@ -47,17 +47,17 @@ Issues = "https://github.com/No767/discord-ext-ipcx/issues"
 [project.optional-dependencies]
 docs = [
     "sphinx==7.4.7",
-    "sphinx-autobuild>=2021.3.14",
-    "furo>=2023.8.19",
-    "sphinx-copybutton>=0.5.2"
+    "sphinx-autobuild>=2024.10.3,<2025",
+    "furo>=2024.8.6,<2025",
+    "sphinx-copybutton>=0.5.2,<1"
 ]
 
 dev = [
-    "pre-commit",
-    "pyright",
-    "ruff",
-    "python-dotenv",
-    "quart>=0.18.4,<0.20.0"
+    "lefthook>=1.8.1,<2",
+    "pyright>=1.1.386,<2",
+    "ruff>=0.7.1,<1",
+    "tox>=4.23.2,<5",
+    "quart>=0.19.8,<1"
 ]
 
 [tool.setuptools.dynamic]
@@ -67,12 +67,6 @@ dependencies = {file = ["requirements.txt"]}
 packages = [
     "discord.ext.ipcx"
 ]
-
-[tool.isort]
-profile = 'black'
-combine_as_imports = true
-combine_star = true
-line_length = 80
 
 [tool.pyright]
 include = ["discord/ext/ipcx/**"]
@@ -86,14 +80,42 @@ reportMissingImports = true
 typeCheckingMode = "basic"
 reportUnnecessaryTypeIgnoreComment = "warning"
 
-[tool.bandit]
-skips = ["B311", "B101"]
-exclude_dirs = ["examples/**"]
-
 [tool.ruff]
-ignore = ["E501", "N999", "E402"]
+line-length = 88
+include = ["discord/ext/ipcx/**", "examples/**"]
+
+[tool.ruff.lint]
+ignore = [
+    "E501", 
+    "N999", 
+    "E402", 
+    "S311",
+    "S101",
+    
+    # These are recommended by Ruff if the formatter is to be used: https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+    "W191",
+    "E111",
+    "E114",
+    "E117",
+    "D206",
+    "D300",
+    "Q000",
+    "Q001",
+    "Q002",
+    "Q003",
+    "COM812",
+    "COM819",
+    "ISC001",
+    "ISC002"
+    ]
 select = ["E", "F", "N", "ASYNC", "S", "ERA"]
-exclude = ["examples/**"]
+fixable = ["ALL"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+
+[tool.ruff.format]
+docstring-code-format = true
 
 [build-system]
 requires = ["setuptools>=61.0"]

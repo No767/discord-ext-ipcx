@@ -90,7 +90,10 @@ class Client:
 
                 log.debug("Multicast Server > %r", recv)
 
-                if recv.type in (aiohttp.WSMsgType.CLOSE, aiohttp.WSMsgType.CLOSED):
+                if recv.type in (
+                    aiohttp.WSMsgType.CLOSE,
+                    aiohttp.WSMsgType.CLOSED,
+                ):
                     log.error(
                         "WebSocket connection unexpectedly closed. Multicast Server is unreachable."
                     )
@@ -119,7 +122,6 @@ class Client:
         async with session.ws_connect(
             self.url, autoping=False, autoclose=False
         ) as websocket:
-
             payload = {
                 "endpoint": endpoint,
                 "data": kwargs,
