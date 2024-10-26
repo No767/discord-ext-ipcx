@@ -22,11 +22,7 @@ jobs:
                 
             - name: Install Project
               run: |
-                pip install .
-                
-            - name: Install Build
-              run: |
-                pip install build
+                pip install .[build]
                 
             - name: Build Packages
               run: |

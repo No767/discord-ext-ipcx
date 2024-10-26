@@ -26,12 +26,12 @@ jobs:
 
     - name: Set up Python 3.12
       id: setup-python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.12'
         
     - name: Cache Pip
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       id: cache-pip
       with:
         path: ~/.cache/pip
@@ -39,18 +39,17 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-pip-
 
-    - name: Install Pip
+    - name: Install Dependencies
       if: steps.cache-pip.outputs.cache-hit != 'true'
       run: |
         pip install .
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+      uses: github/codeql-action/init@v3
       with:
         languages: python
-        setup-python-dependencies: false
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      uses: github/codeql-action/analyze@v3
       with:
         upload: true

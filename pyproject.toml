@@ -59,6 +59,10 @@ dev = [
     "quart>=0.19.8,<1"
 ]
 
+build = [
+    "build>=1.2.2.post1,<2"
+]
+
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
 
