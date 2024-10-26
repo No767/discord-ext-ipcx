@@ -81,7 +81,7 @@ typeCheckingMode = "basic"
 reportUnnecessaryTypeIgnoreComment = "warning"
 
 [tool.ruff]
-line-length = 80
+line-length = 88
 include = ["discord/ext/ipcx/**", "examples/**"]
 
 [tool.ruff.lint]

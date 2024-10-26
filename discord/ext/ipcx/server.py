@@ -159,9 +159,7 @@ class Server:
                 }
             else:
                 if not endpoint or endpoint not in self.endpoints:
-                    log.info(
-                        "Received invalid request (Invalid or no endpoint given)."
-                    )
+                    log.info("Received invalid request (Invalid or no endpoint given).")
                     response = {
                         "error": "Invalid or no endpoint given.",
                         "code": 400,
@@ -203,9 +201,9 @@ class Server:
                 await websocket.send_json(response)
                 log.debug("IPC Server > %r", response)
             except TypeError as error:
-                if str(error).startswith("Object of type") and str(
-                    error
-                ).endswith("is not JSON serializable"):
+                if str(error).startswith("Object of type") and str(error).endswith(
+                    "is not JSON serializable"
+                ):
                     error_response = (
                         "IPC route returned values which are not able to be sent over sockets."
                         " If you are trying to send a discord.py object,"
