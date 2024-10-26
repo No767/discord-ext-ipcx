@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath("../discord/ext/ipcx"))
 sys.path.insert(0, os.path.abspath("discord/ext/ipcx"))
 
 project = "discord-ext-ipcx"
-copyright = "2023, Noelle"
+copyright = "2024, Noelle"
 author = "Noelle"
 
 # -- General configuration ---------------------------------------------------
@@ -44,7 +44,7 @@ intersphinx_mapping = {
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = "furo"
-html_static_path = ["_static"]
+html_static_path = []
 
 html_theme_options = {
     "dark_css_variables": {
