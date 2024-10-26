@@ -5,7 +5,7 @@ build:
   tools:
     python: "3.12"
   commands:
-   - sphinx-build -aEnT --keep-going -d _build -D language=en ./docs 
+   - sphinx-build -aEnT --keep-going ./docs $READTHEDOCS_OUTPUT/html
    # - python -m sphinx -T -E -b html -d _build/doctrees -D language=en ./docs $READTHEDOCS_OUTPUT/html
 
 sphinx:
