@@ -132,7 +132,7 @@ class Server:
 
         Parameters
         ----------
-        request: :class:`aiohttp.web.Request`
+        request: :class:`~aiohttp.web.Request`
             The request made by the client, parsed by aiohttp.
         """
         self.update_endpoints()
