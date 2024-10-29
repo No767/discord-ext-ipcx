@@ -6,16 +6,6 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-import os
-import sys
-
-# Location of Sphinx files
-sys.path.insert(0, os.path.abspath("./../discord/ext/ipcx"))
-
-sys.path.insert(0, os.path.abspath("../"))
-sys.path.insert(0, os.path.abspath("../discord/ext/ipcx"))
-sys.path.insert(0, os.path.abspath("discord/ext/ipcx"))
-
 project = "discord-ext-ipcx"
 copyright = "2024, Noelle"
 author = "Noelle"
@@ -38,6 +28,10 @@ intersphinx_mapping = {
     "aiohttp": ("https://docs.aiohttp.org/en/stable/", None),
     "python": ("https://docs.python.org/3", None),
     "discord": ("https://discordpy.readthedocs.io/en/latest", None),
+}
+
+nitpick_ignore = {
+    ("py:class", "aiohttp.web_request.Request"),
 }
 
 # -- Options for HTML output -------------------------------------------------

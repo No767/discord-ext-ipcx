@@ -39,7 +39,7 @@ classifiers = [
 
 [project.urls]
 Homepage = "https://github.com/No767/discord-ext-ipcx"
-Documentation = "https://discord-ext-ipcx.readthedocs.io/en/latest/"
+Documentation = "https://discord-ext-ipcx.readthedocs.io/en/stable/"
 Repository = "https://github.com/No767/discord-ext-ipcx"
 Issues = "https://github.com/No767/discord-ext-ipcx/issues"
 
