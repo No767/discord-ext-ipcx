@@ -3,10 +3,10 @@ version: 2
 build:
   os: ubuntu-22.04
   tools:
-    python: "3.11"
+    python: "3.12"
   commands:
    - python -m pip install --upgrade -r docs/requirements.txt
-   - python -m sphinx -aEnTW --builder html --keep-going docs/ $READTHEDOCS_OUTPUt/html
+   - python -m sphinx -aEnTW --builder html --keep-going docs/ $READTHEDOCS_OUTPUT/html
 
 sphinx:
    configuration: docs/conf.py
