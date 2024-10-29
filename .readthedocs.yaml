@@ -6,7 +6,7 @@ build:
     python: "3.11"
   commands:
    - python -m pip install --upgrade -r docs/requirements.txt
-   - python -m sphinx -aEnT --builder html --keep-going docs/ $READTHEDOCS_OUTPUT
+   - python -m sphinx -aEnTW --builder html --keep-going docs/ $READTHEDOCS_OUTPUt/html
 
 sphinx:
    configuration: docs/conf.py
