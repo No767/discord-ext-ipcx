@@ -42,4 +42,4 @@ Originally, I forked and upgraded the discord-ext-ipc library to work with disco
 Nonetheless, some modifications had to be made. Here are some changes worth noting:
 
 - The `start` method is now an coroutine and needs to be awaited.
-
+- Types are now added and improved.
