@@ -1,0 +1,33 @@
+name: Towncrier
+on:     
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  Check:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout Repository  
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        id: setup-python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install Towncrier
+        run: |
+          pip install "towncrier>=24.8.0,<25"
+          
+      - name: Verify Towncrier entry added
+        if: ${{ github.event_name == 'pull_request' }}
+        env:
+          BASE_BRANCH: ${{ github.base_ref }}
+        run: |
+          # Fetch the pull request' base branch so towncrier will be able to
+          # compare the current branch with the base branch.
+          # Source: https://github.com/actions/checkout/#fetch-all-branches.
+          git fetch --no-tags origin +refs/heads/${BASE_BRANCH}:refs/remotes/origin/${BASE_BRANCH}
+          towncrier check --compare-with origin/${BASE_BRANCH}

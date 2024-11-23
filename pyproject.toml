@@ -80,6 +80,8 @@ start_string = "<!-- towncrier release notes start -->\n"
 underlines = ["", "", ""]
 title_format = "## discord-ext-ipcx [{version}](https://github.com/No767/discord-ext-ipcx/tree/{version}) - {project_date}"
 issue_format = "[#{issue}](https://github.com/No767/discord-ext-ipcx/issues/{issue})"
+package = "ipcx"
+package_dir = "discord/ext"
 
   [[tool.towncrier.section]]
     path = ""
