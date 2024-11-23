@@ -1,5 +1,7 @@
 pre-commit:
   commands:
+    towncrier-check:
+      run: towncrier check
     ruff-check:
       glob: "*.py" 
       staged_files: true
