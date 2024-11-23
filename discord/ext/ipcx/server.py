@@ -217,6 +217,7 @@ class Server:
                     log.debug("IPC Server > %r", response)
 
                     raise JSONEncodeError(error_response)
+            return websocket
 
     async def handle_multicast(self, request: aiohttp.web.Request):
         """Handles multicasting websocket requests from the client.
@@ -252,6 +253,7 @@ class Server:
             log.debug("Multicast Server > %r", response)
 
             await websocket.send_json(response)
+            return websocket
 
     async def _start(
         self, application: aiohttp.web.Application, port: int
