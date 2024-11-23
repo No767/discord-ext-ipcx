@@ -25,9 +25,9 @@ py -m pip install discord-ext-ipcx
 To install the development version, do the following:
 
 ```bash
-$ git clone https://github.com/No767/discord-ext-ipcx
-$ cd discord-ext-ipcx
-$ python3 -m pip install -U .
+git clone https://github.com/No767/discord-ext-ipcx
+cd discord-ext-ipcx
+python3 -m pip install -U .
 ```
 
 ## Resources
@@ -37,9 +37,9 @@ $ python3 -m pip install -U .
 
 ## Motivation and differences
 
-I forked and upgraded the discord-ext-ipc library to now work with discord.py v2 or higher. The primary reason why is that most of the "IPC" libraries out there are slow and I desperately needed a better IPC library for myself. The core has been kept almost intact, but here are some the changes worth noting:
+Originally, I forked and upgraded the discord-ext-ipc library to work with discord.py v2 for my own needs. Alternative libraries were soon either left unmaintained or archived due to various reasons. This forked version aims to maintain support for newer versions of discord.py while keeping the core intact for easy migration. In the future, more may be added or deleted, but this is unlikely to happen.
+
+Nonetheless, some modifications had to be made. Here are some changes worth noting:
 
 - The `start` method is now an coroutine and needs to be awaited.
-- Actually type hinting the library
-
-More in the future may be added or deleted.
+- Types are now added and improved.
