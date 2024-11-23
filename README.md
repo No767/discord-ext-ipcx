@@ -25,9 +25,9 @@ py -m pip install discord-ext-ipcx
 To install the development version, do the following:
 
 ```bash
-$ git clone https://github.com/No767/discord-ext-ipcx
-$ cd discord-ext-ipcx
-$ python3 -m pip install -U .
+git clone https://github.com/No767/discord-ext-ipcx
+cd discord-ext-ipcx
+python3 -m pip install -U .
 ```
 
 ## Resources
