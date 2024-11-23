@@ -8,8 +8,13 @@ updates:
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     commit-message:
       prefix: "[pip]"
       include: "scope"
     target-branch: "main"
+    groups:
+      dev-deps:
+        dependency-type: "development"
+      prod-deps:
+        dependency-type: "production"
