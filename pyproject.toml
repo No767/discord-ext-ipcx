@@ -57,7 +57,8 @@ dev = [
     "pyright>=1.1.386,<2",
     "ruff>=0.7.1,<1",
     "tox>=4.23.2,<5",
-    "quart>=0.19.8,<1"
+    "quart>=0.19.8,<1",
+    "towncrier>=24.8.0,<25"
 ]
 
 build = [
@@ -71,6 +72,34 @@ dependencies = {file = ["requirements.txt"]}
 packages = [
     "discord.ext.ipcx"
 ]
+
+[tool.towncrier]
+directory = "changelog.d"
+filename = "changelog.md"
+start_string = "<!-- towncrier release notes start -->\n"
+underlines = ["", "", ""]
+title_format = "## [{version}](https://github.com/No767/discord-ext-ipcx/tree/{version}) - {project_date}"
+issue_format = "[#{issue}](https://github.com/No767/discord-ext-ipcx/issues/{issue})"
+
+[[tool.towncrier.type]]
+directory = "removed"
+name = "Removed"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "deprecated"
+name = "Deprecated"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "added"
+name = "Added"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "changed"
+name = "Changed"
+showcontent = true
 
 [tool.pyright]
 include = ["discord/ext/ipcx/**"]
