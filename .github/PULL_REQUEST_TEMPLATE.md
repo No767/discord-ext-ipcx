@@ -21,6 +21,6 @@ _Put an `x` in the boxes that apply_
 
 - [ ] If code changes were made then they have been tested.
   - [ ] I have updated the documentation to reflect the changes. (if appropriate)
-  - [ ] I have generated news fragments for this PR. (if appropriate, format is {#PR}.type.md)
 - [ ] All workflows pass with my new changes
+- [ ] I have generated news fragments for this PR. (if appropriate, format is {#PR}.type.md)
 - [ ] This PR does **not** address a duplicate issue or PR
