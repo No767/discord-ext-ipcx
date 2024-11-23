@@ -112,7 +112,7 @@ ignore = [
     "ISC001",
     "ISC002"
     ]
-select = ["E", "F", "N", "ASYNC", "S", "ERA"]
+select = ["E", "F", "N", "ASYNC", "S", "ERA", "I"]
 fixable = ["ALL"]
 
 [tool.ruff.lint.isort]
