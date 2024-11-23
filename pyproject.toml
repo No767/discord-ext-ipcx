@@ -57,7 +57,8 @@ dev = [
     "pyright>=1.1.386,<2",
     "ruff>=0.7.1,<1",
     "tox>=4.23.2,<5",
-    "quart>=0.19.8,<1"
+    "quart>=0.19.8,<1",
+    "towncrier>=24.8.0,<25"
 ]
 
 build = [
@@ -71,6 +72,50 @@ dependencies = {file = ["requirements.txt"]}
 packages = [
     "discord.ext.ipcx"
 ]
+
+[tool.towncrier]
+directory = "changelog.d"
+filename = "changelog.md"
+start_string = "<!-- towncrier release notes start -->\n"
+underlines = ["", "", ""]
+title_format = "## discord-ext-ipcx [{version}](https://github.com/No767/discord-ext-ipcx/tree/{version}) - {project_date}"
+issue_format = "[#{issue}](https://github.com/No767/discord-ext-ipcx/issues/{issue})"
+package = "ipcx"
+package_dir = "discord/ext"
+
+  [[tool.towncrier.section]]
+    path = ""
+
+  [[tool.towncrier.type]]
+    directory = "bugfix"
+    name = "Bug fixes"
+    showcontent = true
+
+  [[tool.towncrier.type]]
+    directory = "feature"
+    name = "Features"
+    showcontent = true
+
+  [[tool.towncrier.type]]
+    directory = "deprecation"
+    name = "Deprecations (removal in next major release)"
+    showcontent = true
+
+  [[tool.towncrier.type]]
+    directory = "breaking"
+    name = "Removals and backward incompatible breaking changes"
+    showcontent = true
+
+  [[tool.towncrier.type]]
+    directory = "doc"
+    name = "Improved documentation"
+    showcontent = true
+
+  [[tool.towncrier.type]]
+    # Changes that are hard to assign to any of the above categories.
+    directory = "misc"
+    name = "Miscellaneous internal changes"
+    showcontent = true
 
 [tool.pyright]
 include = ["discord/ext/ipcx/**"]
