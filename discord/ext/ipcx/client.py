@@ -1,10 +1,17 @@
+from __future__ import annotations
+
 import asyncio
 import logging
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any, Optional
 
 import aiohttp
 
 from .errors import NotConnectedError
+
+if TYPE_CHECKING:
+    from types import TracebackType
+
+    from typing_extensions import Self
 
 log = logging.getLogger(__name__)
 
@@ -12,6 +19,8 @@ log = logging.getLogger(__name__)
 class Client:
     """
     Handles webserver side requests to the bot process.
+
+    Operations with ``async with`` will automatically initialize the client and automatically cleans up.
 
     Parameters
     ----------
@@ -38,13 +47,30 @@ class Client:
         self.port = port
         self.multicast_port = multicast_port
 
-        self.session = None
+        self.session: Optional[aiohttp.ClientSession] = None
 
     @property
     def url(self):
         return "ws://{0.host}:{1}".format(
             self, self.port if self.port else self.multicast_port
         )
+
+    async def __aenter__(self) -> Self:
+        await self._get_session()
+        return self
+
+    async def __aexit__(
+        self,
+        exc_type: Optional[type[BaseException]],
+        exc_value: Optional[BaseException],
+        traceback: Optional[TracebackType],
+    ) -> None:
+        await self.close()
+
+    async def _get_session(self) -> aiohttp.ClientSession:
+        if not self.session:
+            self.session = aiohttp.ClientSession()
+        return self.session
 
     async def close(self) -> None:
         """Properly closes the :class:`aiohttp.ClientSession` session used for connections
@@ -57,11 +83,6 @@ class Client:
         """
         if self.session:
             await self.session.close()
-
-    async def _get_session(self) -> aiohttp.ClientSession:
-        if not self.session:
-            self.session = aiohttp.ClientSession()
-        return self.session
 
     async def get_port(self) -> int:
         """Attempts to obtain the provided port.
