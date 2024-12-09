@@ -17,3 +17,9 @@ Server
      :members:
      
 ..  autofunction:: discord.ext.ipcx.route
+
+Exceptions
+----------
+
+.. automodule:: discord.ext.ipcx.errors
+     :members:
