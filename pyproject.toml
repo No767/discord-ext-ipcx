@@ -57,8 +57,12 @@ dev = [
     "pyright>=1.1.386,<2",
     "ruff>=0.7.1,<1",
     "tox>=4.23.2,<5",
-    "quart>=0.19.8,<1",
     "towncrier>=24.8.0,<25"
+]
+
+examples = [
+    "quart>=0.19.8,<1",
+    "fastapi[standard]>=0.115.6,<1"
 ]
 
 build = [
