@@ -1,3 +1,25 @@
+## discord-ext-ipcx [0.4.0](https://github.com/No767/discord-ext-ipcx/tree/0.4.0) - 2024-12-09
+
+### Features
+
+- Implement `async with x` operations for `discord.ext.ipcx.Client` ([#56](https://github.com/No767/discord-ext-ipcx/issues/56))
+
+### Removals and backward incompatible breaking changes
+
+- Delist `discord.ext.ipcx.Client.get_port` from public methods ([#60](https://github.com/No767/discord-ext-ipcx/issues/60))
+
+### Improved documentation
+
+- Add FastAPI examples ([#57](https://github.com/No767/discord-ext-ipcx/issues/57))
+- Modern library examples ([#59](https://github.com/No767/discord-ext-ipcx/issues/59))
+- Include exceptions within API reference ([#61](https://github.com/No767/discord-ext-ipcx/issues/61))
+- Add note about installation of example extras dependencies ([#62](https://github.com/No767/discord-ext-ipcx/issues/62))
+
+### Miscellaneous internal changes
+
+- Rename examples directories ([#58](https://github.com/No767/discord-ext-ipcx/issues/58))
+
+
 ## discord-ext-ipcx [0.3.0](https://github.com/No767/discord-ext-ipcx/tree/0.3.0) - 2024-11-22
 
 ### Bug fixes
