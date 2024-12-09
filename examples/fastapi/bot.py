@@ -3,11 +3,14 @@ import logging
 import discord
 from discord.ext import commands, ipcx
 
+TOKEN = ""
+SECRET_KEY = ""  # This key must be the exact same on the webserver
+
 
 class MyBot(commands.Bot):
     def __init__(self, intents: discord.Intents, *args, **kwargs):
         super().__init__(command_prefix="!", intents=intents, *args, **kwargs)
-        self.ipc = ipcx.Server(self, secret_key="my_secret_key")  # nosec
+        self.ipc = ipcx.Server(self, secret_key=SECRET_KEY)
         self.log = logging.getLogger("discord.ext.ipcx")
 
     async def setup_hook(self):
@@ -26,7 +29,6 @@ class MyBot(commands.Bot):
 intents = discord.Intents.default()
 intents.message_content = True
 
-TOKEN = "INSERT YOUR TOKEN HERE"  # nosec
 bot = MyBot(intents=intents)
 
 

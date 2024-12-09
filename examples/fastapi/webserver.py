@@ -12,6 +12,9 @@ if TYPE_CHECKING:
     from typing_extensions import Self
 
 
+SECRET_KEY = ""  # This key must be the exact same on the bot
+
+
 class MyApp(FastAPI):
     client: ipcx.Client
 
@@ -20,7 +23,7 @@ class MyApp(FastAPI):
 
     @asynccontextmanager
     async def lifespan(self, app: Self):
-        async with ipcx.Client(secret_key="my_secret_key") as app.client:  # nosec # secret_key must be the same as your server
+        async with ipcx.Client(secret_key=SECRET_KEY) as app.client:
             yield
 
 
