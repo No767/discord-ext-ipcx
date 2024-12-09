@@ -2,9 +2,11 @@ from quart import Quart
 
 from discord.ext import ipcx
 
+SECRET_KEY = "" # This key must be the exact same on the bot
+
 app = Quart(__name__)
 ipc_client = ipcx.Client(
-    secret_key="my_secret_key"  # nosec # secret_key must be the same as your server
+    secret_key=SECRET_KEY
 )
 
 
