@@ -72,28 +72,7 @@ class Client:
             self.session = aiohttp.ClientSession()
         return self.session
 
-    async def close(self) -> None:
-        """Properly closes the :class:`aiohttp.ClientSession` session used for connections
-
-        .. warning::
-
-            This is required in order to clean up any remaining connections held in :class:`aiohttp.ClientSession`.
-            Without doing so, your webserver will complain about having an unclosed client session, which is the result
-            of not closing it manually.
-        """
-        if self.session:
-            await self.session.close()
-
-    async def get_port(self) -> int:
-        """Attempts to obtain the provided port.
-
-        If not found, then an connection to the multicast server is made to attempt to obtain the port.
-
-        Returns
-        -------
-        int
-            The port number
-        """
+    async def _get_port(self) -> int:
         if not self.port:
             log.debug(
                 "No port was provided - initiating multicast connection at %s.",
@@ -125,6 +104,18 @@ class Client:
 
         return self.port
 
+    async def close(self) -> None:
+        """Properly closes the :class:`aiohttp.ClientSession` session used for connections
+
+        .. warning::
+
+            This is required in order to clean up any remaining connections held in :class:`aiohttp.ClientSession`.
+            Without doing so, your webserver will complain about having an unclosed client session, which is the result
+            of not closing it manually.
+        """
+        if self.session:
+            await self.session.close()
+
     async def request(self, endpoint: str, **kwargs) -> Any:
         """Make a request to the IPC server process.
 
@@ -137,7 +128,7 @@ class Client:
         """
         log.info("Requesting IPC Server for %r with %r", endpoint, kwargs)
         if not self.port:
-            self.port = await self.get_port()
+            self.port = await self._get_port()
 
         session = await self._get_session()
         async with session.ws_connect(
