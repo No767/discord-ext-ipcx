@@ -1,7 +1,8 @@
 Examples
 ^^^^^^^^
 
-Here are some ways you can use this library in your own bot. Make sure to adjust it to your own bot's needs. 
+Here are some ways you can use this library in your own bot. Make sure to adjust it to your own bot's needs.
+If you wish to run these examples locally, please install the examples extras via ``python3 -m pip install discord-ext-ipcx[examples]``.
 For GitHub based examples, please see the `examples directory <https://github.com/No767/discord-ext-ipcx/tree/main/examples>`_
 
 Basic IPC
