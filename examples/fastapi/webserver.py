@@ -12,7 +12,8 @@ if TYPE_CHECKING:
     from typing_extensions import Self
 
 
-SECRET_KEY = "" # This key must be the exact same on the bot
+SECRET_KEY = ""  # This key must be the exact same on the bot
+
 
 class MyApp(FastAPI):
     client: ipcx.Client

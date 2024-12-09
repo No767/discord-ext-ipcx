@@ -4,7 +4,9 @@ import discord
 from discord.ext import commands, ipcx
 
 TOKEN = ""
-SECRET_KEY = "" # This key must be the exact same on the webserver
+SECRET_KEY = ""  # This key must be the exact same on the webserver
+
+
 class MyBot(commands.Bot):
     def __init__(self, intents: discord.Intents, *args, **kwargs):
         super().__init__(command_prefix="!", intents=intents, *args, **kwargs)
