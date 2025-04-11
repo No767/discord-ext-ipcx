@@ -54,7 +54,7 @@ docs = [
 
 dev = [
     "lefthook>=1.8.1,<2",
-    "pyright>=1.1.386,<2",
+    "pyright[nodejs]>=1.1.386,<2",
     "ruff>=0.7.1,<1",
     "tox>=4.23.2,<5",
     "towncrier>=24.8.0,<25"
@@ -78,7 +78,7 @@ packages = [
 ]
 
 [tool.towncrier]
-directory = "changelog.d"
+directory = "changes"
 filename = "changelog.md"
 start_string = "<!-- towncrier release notes start -->\n"
 underlines = ["", "", ""]
@@ -124,10 +124,8 @@ package_dir = "discord/ext"
 [tool.pyright]
 include = ["discord/ext/ipcx/**"]
 exclude = [
-    "**/__pycache__", 
-    "**/.mypy_cache", 
-    "**/.dmpypy.json", 
-    "docs",
+    "**/__pycache__",
+    "docs"
 ]
 reportMissingImports = true
 typeCheckingMode = "basic"

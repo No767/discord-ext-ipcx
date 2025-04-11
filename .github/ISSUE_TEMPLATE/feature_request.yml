@@ -14,7 +14,7 @@ body:
       multiple: false
       label: What is the feature request for?
       options:
-        - Rodhaj
+        - The library
         - The documentation
     validations:
       required: true
