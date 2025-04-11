@@ -5,7 +5,7 @@ You will need to read the setup instructions before you start working.
 
 The following is a set of guidelines for contributing to the repository. These are not hard rules.
 
-## I'm confused and want to ask questions!
+## I'm confused and want to ask questions
 
 Generally, there are much better resources that are available. These include:
 
