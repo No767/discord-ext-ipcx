@@ -29,12 +29,18 @@ jobs:
         with:
           python-version: ${{ matrix.version }}
 
-      - name: Install tox
+      - name: Install packages
         run: |
-          pip install "tox>=4.25.0,<5"
-          
-      - name: Lint Codebase
+          pip install "discord.py>=2.7.1,<3" "pyright[nodejs]>=1.1.386,<2" "ruff>=0.7.1,<1"
+
+      - name: Check typing
         run: |
-          RAW_PYTHON_VERSION=${{ matrix.version }}
-          PYTHON_VERSION=$(echo $RAW_PYTHON_VERSION | sed 's/\.//')
-          tox -e py$PYTHON_VERSION 
+          pyright discord/ext/ipcx
+
+      - name: Check codebase
+        run: |
+          ruff check discord/ext/ipcx --exit-non-zero-on-fix
+
+      - name: Check for formatting
+        run: |
+          ruff format discord/ext/ipcx --check

@@ -1,0 +1,65 @@
+[tools]
+uv = "0.11.14"
+
+
+[settings]
+experimental = true
+pin = true
+
+
+[tasks."lint"]
+description = "Lints the codebase by type checking and general linting"
+env._.path = ".venv/bin"
+dir = "{{ config_root }}"
+run = ["pyright discord/ext/ipcx", "ruff check discord/ext/ipcx --fix --exit-non-zero-on-fix"]
+
+[tasks."format"]
+alias = ["fmt"]
+description = "Formats the codebase"
+env._.path = ".venv/bin"
+dir = "{{ config_root }}"
+run = "ruff format discord/ext/ipcx"
+
+[tasks."check"]
+description = "Lint and format codebase. This is necessary to handle import sorting and formatting. TD;LR: Run this task once you are done with development at the end of the PR"
+run = [{ task = "lint" }, { task = "format" }]
+
+# Docs tasks
+[tasks."docs:auto:build"]
+description = "Builds documentation and serves using sphinx-autobuild"
+env._.path = ".venv/bin"
+dir ="{{ config_root }}/docs"
+run = "sphinx-autobuild -nTW . ./_build/dev/html"
+
+[tasks."docs:preview:build"]
+description = "Builds the documentation for production"
+env._.path = ".venv/bin"
+dir ="{{ config_root }}/docs"
+run = "sphinx-build -aEnTW --keep-going . ./_build/dist/html"
+
+# Towncrier tasks
+[tasks."towncrier:create"]
+description = "Creates towncrier entry"
+env._.path = ".venv/bin"
+usage = '''
+flag "--filename <filename>" help="Filename to use"
+flag "--entry <entry>" help="Entry to put in"
+'''
+dir = "{{ config_root }}"
+run = '''
+#!/usr/bin/env bash
+set -euo pipefail
+
+towncrier create ${usage_filename?} && echo "${usage_entry?}" > changes/${usage_filename?}
+'''
+run_windows = '''
+$ErrorActionPreference = 'Stop'
+
+towncrier create ${usage_filename?} && echo "${usage_entry?} > changes/${usage_filename?}
+'''
+
+[tasks."towncrier:build"]
+description = "Builds towncrier changelog"
+env._.path = ".venv/bin"
+dir = "{{ config_root }}"
+run = "towncrier build --yes"
