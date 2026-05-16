@@ -31,7 +31,7 @@ jobs:
 
       - name: Install packages
         run: |
-          pip install discord.py>=2.7.1,<3 pyright[nodejs]>=1.1.386,<2 ruff>=0.7.1,<1
+          pip install "discord.py>=2.7.1,<3" "pyright[nodejs]>=1.1.386,<2" "ruff>=0.7.1,<1"
 
       - name: Check typing
         run: |
