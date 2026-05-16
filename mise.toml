@@ -52,6 +52,11 @@ set -euo pipefail
 
 towncrier create ${usage_filename?} && echo "${usage_entry?}" > changes/${usage_filename?}
 '''
+run_windows = '''
+$ErrorActionPreference = 'Stop'
+
+towncrier create ${usage_filename?} && echo "${usage_entry?} > changes/${usage_filename?}
+'''
 
 [tasks."towncrier:build"]
 description = "Builds towncrier changelog"
