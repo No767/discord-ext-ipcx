@@ -1,44 +1,57 @@
 name: Build and Publish
 on:
   push:
-    paths-ignore:
-      - "**.md"
     tags:
       - 'v*'
+
+permissions: {}
+
 jobs:
   Build:
     runs-on: ubuntu-24.04
+
+    env:
+      UV_NO_CACHE: true
+
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Set up Python
-        id: setup-python
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
-      - name: Install Project
-        run: |
-          pip install .[build]
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v8
+        with:
+          version: "latest"
 
-      - name: Build Packages
-        run: |
-          python -m build
+      - name: Verify lockfile
+        run: uv lock --check
 
-      - name: Upload Build
+      - name: Build package
+        run: uv build --require-hashes
+
+      - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          path: dist/*
+          name: dist
+          path: dist/
+          if-no-files-found: error
+          retention-days: 7
 
   Publish:
     runs-on: ubuntu-24.04
     needs: Build
 
-    env:
+    environment:
       name: pypi
       url: https://pypi.org/p/discord-ext-ipcx
+ 
     permissions:
       id-token: write
 
@@ -46,10 +59,12 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: artifact
-          path: dist
+          name: dist
+          path: dist/
           
       - name: Publish Packages to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
+          attestations: true
           print-hash: true
+          verbose: true

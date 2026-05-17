@@ -14,7 +14,7 @@ jobs:
         fetch-depth: '0'
 
     - name: Generate release notes
-      uses: no767/get-releasenote@v0
+      uses: no767/get-releasenote@3eedfc5c134cf232520bb18ccc856838dbdc0b3f
       with:
         name: discord-ext-ipcx
         changes_file: changelog.md

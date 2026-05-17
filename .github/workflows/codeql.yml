@@ -23,24 +23,18 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Set up Python
-      id: setup-python
       uses: actions/setup-python@v5
       with:
         python-version: '3.x'
-        
-    - name: Cache Pip
-      uses: actions/cache@v4
-      id: cache-pip
+
+    - name: Setup uv
+      uses: astral-sh/setup-uv@v8
       with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
+        version: "latest"
+        enable-cache: true
 
     - name: Install Dependencies
-      if: steps.cache-pip.outputs.cache-hit != 'true'
-      run: |
-        pip install .
+      run: uv sync --no-build --no-default-groups --locked
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
