@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 discord-ext-ipcx
-============================================
+================
 
 .. toctree::
    :maxdepth: 2
@@ -18,7 +18,7 @@ discord-ext-ipcx is a maintained, tested version of the now old discord-ext-ipc 
 It strives to maintain the compatibly of ``discord-ext-ipc`` but with some modern upgrades and touch-ups. 
 
 Getting Started
-^^^^^^^^^^^^^^^
+---------------
 
 Although ``discord-ext-ipcx`` is mostly compatible with the old way of doing things, 
 it is recommended to see the examples in order to know how to use it.
@@ -28,6 +28,6 @@ it is recommended to see the examples in order to know how to use it.
 In short, the examples use the new ``setup_hook`` to load the server within the examples instead.
 
 Reference
-^^^^^^^^^
+---------
 
 - :doc:`api`
