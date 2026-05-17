@@ -9,8 +9,8 @@ maintainers = [
     { name="No767", email="73260931+No767@users.noreply.github.com"}
 ]
 readme = "README.md"
-dynamic = ["dependencies"]
-requires-python = ">=3.9,<4"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 keywords = [
     "discord.py", 
     "asyncio", 
@@ -22,7 +22,6 @@ classifiers = [
     "Development Status :: 4 - Beta",
     "Framework :: AsyncIO",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: Apache Software License",
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3.9",
@@ -38,44 +37,42 @@ classifiers = [
     "Typing :: Typed"
 ]
 
+requires-python = ">=3.9,<4"
+dependencies = [
+    "discord.py>=2,<3",
+]
+
+[dependency-groups]
+dev = [
+    "towncrier~=25.8.0",
+    { include-group = "lint" },
+    { include-group = "docs" },
+    { include-group = "examples" }
+]
+lint = [
+    "ruff~=0.15.13",
+    "pyright[nodejs]~=1.1.409"
+]
+docs = [
+    "sphinx==7.4.7",
+    "sphinx-autobuild==2024.10.03",
+    "sphinx-copybutton~=0.5.2",
+    "furo~=2025.12.19"
+]
+examples = [
+    "quart~=0.20.0",
+    "fastapi==0.128.8",
+    "uvicorn==0.39.0",
+    "httptools~=0.7.1",
+    "uvloop~=0.22.1 ; sys_platform != 'win32'"
+]
+
+
 [project.urls]
 Homepage = "https://github.com/No767/discord-ext-ipcx"
 Documentation = "https://discord-ext-ipcx.readthedocs.io/en/stable/"
 Repository = "https://github.com/No767/discord-ext-ipcx"
 Issues = "https://github.com/No767/discord-ext-ipcx/issues"
-
-[project.optional-dependencies]
-docs = [
-    "sphinx>=8.1.3,<9",
-    "sphinx-autobuild>=2024.10.3,<2025",
-    "furo>=2024.8.6,<2026",
-    "sphinx-copybutton>=0.5.2,<1"
-]
-
-dev = [
-    "lefthook>=1.8.1,<3",
-    "pyright[nodejs]>=1.1.386,<2",
-    "ruff>=0.7.1,<1",
-    "tox>=4.23.2,<5",
-    "towncrier>=24.8.0,<26"
-]
-
-examples = [
-    "quart>=0.19.8,<1",
-    "fastapi[standard]>=0.115.6,<1"
-]
-
-build = [
-    "build>=1.2.2.post1,<2"
-]
-
-[tool.setuptools.dynamic]
-dependencies = {file = ["requirements.txt"]}
-
-[tool.setuptools]
-packages = [
-    "discord.ext.ipcx"
-]
 
 [tool.towncrier]
 directory = "changes"
@@ -158,7 +155,7 @@ ignore = [
     "COM819",
     "ISC001",
     "ISC002"
-    ]
+]
 select = ["E", "F", "N", "ASYNC", "S", "ERA", "I"]
 fixable = ["ALL"]
 
@@ -168,6 +165,14 @@ combine-as-imports = true
 [tool.ruff.format]
 docstring-code-format = true
 
+[tool.uv]
+package = true
+
+[tool.uv.build-backend]
+module-name = "discord.ext.ipcx"
+module-root = ""
+namespace = true
+
 [build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+requires = ["uv_build>=0.11.14,<0.12.0"]
+build-backend = "uv_build"

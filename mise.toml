@@ -7,6 +7,12 @@ experimental = true
 pin = true
 
 
+[tasks."build"]
+description = "Builds the package using uv"
+env._.path = ".venv/bin"
+dir = "{{ config_root }}"
+run = "uv build --require-hashes"
+
 [tasks."lint"]
 description = "Lints the codebase by type checking and general linting"
 env._.path = ".venv/bin"
