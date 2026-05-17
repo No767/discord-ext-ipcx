@@ -44,9 +44,10 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "towncrier~=25.8.0",
     { include-group = "lint" },
     { include-group = "docs" },
-    { include-group = "examples" },
+    { include-group = "examples" }
 ]
 lint = [
     "ruff~=0.15.13",
