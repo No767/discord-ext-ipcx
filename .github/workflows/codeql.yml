@@ -34,7 +34,7 @@ jobs:
         enable-cache: true
 
     - name: Install Dependencies
-      run: uv sync --no-build --no-default-groups --locked
+      run: uv sync --no-default-groups --locked
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
