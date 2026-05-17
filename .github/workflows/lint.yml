@@ -43,12 +43,12 @@ jobs:
 
       - name: Check typing
         run: |
-          uv run pyright discord/ext/ipcx examples
+          uv run pyright discord/ext/ipcx
 
       - name: Check codebase
         run: |
-          uv run ruff check discord/ext/ipcx examples --exit-non-zero-on-fix
+          uv run ruff check discord/ext/ipcx --exit-non-zero-on-fix
 
       - name: Check for formatting
         run: |
-          uv run ruff format discord/ext/ipcx examples --check
+          uv run ruff format discord/ext/ipcx --check
