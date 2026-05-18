@@ -54,15 +54,15 @@ lint = [
     "pyright[nodejs]~=1.1.409"
 ]
 docs = [
-    "sphinx==7.4.7",
-    "sphinx-autobuild==2024.10.03",
+    "sphinx==9.1.0",
+    "sphinx-autobuild==2025.8.25",
     "sphinx-copybutton~=0.5.2",
     "furo~=2025.12.19"
 ]
 examples = [
     "quart~=0.20.0",
-    "fastapi==0.128.8",
-    "uvicorn==0.39.0",
+    "fastapi==0.136.1",
+    "uvicorn==0.47.0",
     "httptools~=0.7.1",
     "uvloop~=0.22.1 ; sys_platform != 'win32'"
 ]
