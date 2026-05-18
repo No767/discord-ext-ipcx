@@ -17,7 +17,10 @@ run = "uv build --require-hashes"
 description = "Lints the codebase by type checking and general linting"
 env._.path = ".venv/bin"
 dir = "{{ config_root }}"
-run = ["pyright discord/ext/ipcx", "ruff check discord/ext/ipcx --fix --exit-non-zero-on-fix"]
+run = [
+  "ty check discord/ext/ipcx examples --error-on-warning",
+  "ruff check discord/ext/ipcx examples --fix --exit-non-zero-on-fix"
+]
 
 [tasks."format"]
 alias = ["fmt"]
@@ -34,13 +37,13 @@ run = [{ task = "lint" }, { task = "format" }]
 [tasks."docs:auto:build"]
 description = "Builds documentation and serves using sphinx-autobuild"
 env._.path = ".venv/bin"
-dir ="{{ config_root }}/docs"
+dir = "{{ config_root }}/docs"
 run = "sphinx-autobuild -nTW . ./_build/dev/html"
 
 [tasks."docs:preview:build"]
 description = "Builds the documentation for production"
 env._.path = ".venv/bin"
-dir ="{{ config_root }}/docs"
+dir = "{{ config_root }}/docs"
 run = "sphinx-build -aEnTW --keep-going . ./_build/dist/html"
 
 # Towncrier tasks

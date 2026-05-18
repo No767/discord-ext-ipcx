@@ -1,4 +1,4 @@
-from discord import DiscordException
+from discord.errors import DiscordException
 
 
 class IPCError(DiscordException):

@@ -50,7 +50,7 @@ dev = [
 ]
 lint = [
     "ruff~=0.15.13",
-    "pyright[nodejs]~=1.1.409"
+    "ty==0.0.37",
 ]
 docs = [
     "sphinx==8.1.3",
@@ -117,15 +117,20 @@ package_dir = "discord/ext"
     name = "Miscellaneous internal changes"
     showcontent = true
 
-[tool.pyright]
-include = ["discord/ext/ipcx/**"]
+[tool.ty.src]
+include = ["discord/ext/ipcx/**", "examples/**"]
 exclude = [
-    "**/__pycache__",
+    "__pycache__", 
     "docs"
 ]
-reportMissingImports = true
-typeCheckingMode = "basic"
-reportUnnecessaryTypeIgnoreComment = "warning"
+
+[[tool.ty.overrides]]
+include = ["examples/**"]
+
+[tool.ty.overrides.rules]
+# ty flags discord.Intents as an invalid attribute but this has been known to be a ty-specific behavior
+# using "discord.Intents" is correct
+unresolved-attribute = "ignore"
 
 [tool.ruff]
 line-length = 88
