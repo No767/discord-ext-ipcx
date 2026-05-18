@@ -9,7 +9,7 @@ jobs:
 
     if: contains(github.event.head_commit.message, '#major') || contains(github.event.head_commit.message, '#minor') || contains(github.event.head_commit.message, '#patch')
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       with:
         fetch-depth: '0'
 
@@ -22,7 +22,7 @@ jobs:
         version_file: discord/ext/ipcx/__init__.py
 
     - name: Bump version and push tag
-      uses: anothrNick/github-tag-action@1.67.0
+      uses: anothrNick/github-tag-action@4ed44965e0db8dab2b466a16da04aec3cc312fd8 # 1.75.0
       id: tag_version
       env:
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
@@ -30,7 +30,7 @@ jobs:
         RELEASE_BRANCHES: main
         
     - name: Release New Version
-      uses: ncipollo/release-action@v1
+      uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1
       with:
         bodyFile: "output.md"
         token: ${{ secrets.RELEASE_TOKEN }}
