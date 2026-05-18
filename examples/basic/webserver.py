@@ -9,7 +9,7 @@ ipc_client = ipcx.Client(secret_key=SECRET_KEY)
 
 
 @app.route("/")
-async def index():
+async def index() -> str:
     member_count = await ipc_client.request(
         "get_member_count", guild_id=12345678
     )  # get the member count of server with ID 12345678
@@ -18,7 +18,7 @@ async def index():
 
 
 @app.after_serving
-async def close_session():
+async def close_session() -> None:
     await ipc_client.close()
 
 
