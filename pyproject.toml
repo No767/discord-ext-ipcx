@@ -24,7 +24,6 @@ classifiers = [
     "Intended Audience :: Developers",
     "Natural Language :: English",
     "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -37,7 +36,7 @@ classifiers = [
     "Typing :: Typed"
 ]
 
-requires-python = ">=3.9,<4"
+requires-python = ">=3.10,<4"
 dependencies = [
     "discord.py>=2,<3",
 ]
@@ -54,15 +53,15 @@ lint = [
     "pyright[nodejs]~=1.1.409"
 ]
 docs = [
-    "sphinx==7.4.7",
+    "sphinx==8.1.3",
     "sphinx-autobuild==2024.10.03",
     "sphinx-copybutton~=0.5.2",
     "furo~=2025.12.19"
 ]
 examples = [
     "quart~=0.20.0",
-    "fastapi==0.128.8",
-    "uvicorn==0.39.0",
+    "fastapi~=0.136.1",
+    "uvicorn~=0.47.0",
     "httptools~=0.7.1",
     "uvloop~=0.22.1 ; sys_platform != 'win32'"
 ]
