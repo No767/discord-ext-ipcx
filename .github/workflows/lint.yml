@@ -43,7 +43,7 @@ jobs:
 
       - name: Check typing
         run: |
-          uv run pyright discord/ext/ipcx
+          uv run ty check discord/ext/ipcx --error-on-warning
 
       - name: Check codebase
         run: |
