@@ -50,7 +50,7 @@ dev = [
 ]
 lint = [
     "ruff~=0.15.13",
-    "ty==0.0.40",
+    "ty==0.0.48",
 ]
 docs = [
     "sphinx==8.1.3",
@@ -61,7 +61,7 @@ docs = [
 examples = [
     "quart~=0.20.0",
     "fastapi~=0.136.1",
-    "uvicorn~=0.48.0",
+    "uvicorn~=0.49.0",
     "httptools~=0.8.0",
     "uvloop~=0.22.1 ; sys_platform != 'win32'"
 ]
