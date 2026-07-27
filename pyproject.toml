@@ -49,8 +49,8 @@ dev = [
     { include-group = "examples" }
 ]
 lint = [
-    "ruff~=0.15.13",
-    "ty==0.0.59",
+    "ruff~=0.16.0",
+    "ty==0.0.64",
 ]
 docs = [
     "sphinx==8.1.3",
@@ -59,8 +59,8 @@ docs = [
     "furo~=2025.12.19"
 ]
 examples = [
-    "quart~=0.20.0",
-    "fastapi~=0.139.0",
+    "quart~=0.21.0",
+    "fastapi~=0.140.7",
     "uvicorn~=0.51.0",
     "httptools~=0.8.0",
     "uvloop~=0.22.1 ; sys_platform != 'win32'"
