@@ -59,7 +59,7 @@ docs = [
     "furo~=2025.12.19"
 ]
 examples = [
-    "quart~=0.21.0",
+    "quart==0.20.0",
     "fastapi~=0.140.7",
     "uvicorn~=0.51.0",
     "httptools~=0.8.0",
