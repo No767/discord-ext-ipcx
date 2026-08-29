@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import sys
 from typing import TYPE_CHECKING, Any, Optional
 
 import aiohttp
@@ -11,9 +12,15 @@ from .errors import NotConnectedError
 if TYPE_CHECKING:
     from types import TracebackType
 
-    from typing_extensions import Self
+if sys.version_info >= (3, 13):
+    from typing import Self, TypeVar
+else:
+    from typing_extensions import Self, TypeVar
 
-log = logging.getLogger(__name__)
+
+_T = TypeVar("_T", default=Any)
+
+_log = logging.getLogger(__name__)
 
 
 class Client:
@@ -26,11 +33,11 @@ class Client:
     ----------
     host: str
         The IP or host of the IPC server, defaults to localhost
-    Optional[port]: int
+    port: Optional[int]
         The port of the IPC server. If not supplied the port will be found automatically, defaults to None
     multicast_port: Optional[int]
-        The mutlicast post of the IPC server. If not supplied, the port used will be 20000.
-    secret_key: Union[str, bytes]
+        The multicast post of the IPC server. If not supplied, the port used will be 20000.
+    secret_key: Optional[str]
         The secret key for your IPC server. Must match the server secret_key or requests will not go ahead, defaults to None
     """
 
@@ -40,7 +47,7 @@ class Client:
         port: Optional[int] = None,
         multicast_port: int = 20000,
         secret_key: Optional[str] = None,
-    ):
+    ) -> None:
         self.secret_key = secret_key
 
         self.host = host
@@ -50,35 +57,33 @@ class Client:
         self.session: Optional[aiohttp.ClientSession] = None
 
     @property
-    def url(self):
-        return "ws://{0.host}:{1}".format(
-            self, self.port if self.port else self.multicast_port
-        )
+    def url(self) -> str:
+        return f"ws://{self.host}:{self.port or self.multicast_port}"
 
     async def __aenter__(self) -> Self:
-        await self._get_session()
+        self._get_session()
         return self
 
     async def __aexit__(
         self,
-        exc_type: Optional[type[BaseException]],
-        exc_value: Optional[BaseException],
-        traceback: Optional[TracebackType],
+        exc_type: type[BaseException] | None,
+        exc: BaseException | None,
+        traceback: TracebackType | None,
     ) -> None:
         await self.close()
 
-    async def _get_session(self) -> aiohttp.ClientSession:
+    def _get_session(self) -> aiohttp.ClientSession:
         if not self.session:
             self.session = aiohttp.ClientSession()
         return self.session
 
     async def _get_port(self) -> int:
         if not self.port:
-            log.debug(
+            _log.debug(
                 "No port was provided - initiating multicast connection at %s.",
                 self.url,
             )
-            session = await self._get_session()
+            session = self._get_session()
             async with session.ws_connect(self.url, autoping=False) as multicast:
                 payload = {
                     "connect": True,
@@ -88,16 +93,17 @@ class Client:
                 await multicast.send_json(payload)
                 recv = await multicast.receive()
 
-                log.debug("Multicast Server > %r", recv)
+                _log.debug("Multicast Server > %r", recv)
 
                 if recv.type in (
                     aiohttp.WSMsgType.CLOSE,
                     aiohttp.WSMsgType.CLOSED,
                 ):
-                    log.error(
+                    _log.error(
                         "WebSocket connection unexpectedly closed. Multicast Server is unreachable."
                     )
-                    raise NotConnectedError("Multicast server connection failed.")
+                    msg = "Multicast server connection failed."
+                    raise NotConnectedError(msg)
 
                 port_data = recv.json()
                 self.port = port_data["port"]
@@ -116,7 +122,7 @@ class Client:
         if self.session:
             await self.session.close()
 
-    async def request(self, endpoint: str, **kwargs) -> Any:
+    async def request(self, endpoint: str, **kwargs: Any) -> _T:  # noqa: ANN401
         """Make a request to the IPC server process.
 
         Parameters
@@ -126,11 +132,11 @@ class Client:
         **kwargs
             The data to send to the endpoint
         """
-        log.info("Requesting IPC Server for %r with %r", endpoint, kwargs)
+        _log.info("Requesting IPC Server for %r with %r", endpoint, kwargs)
         if not self.port:
             self.port = await self._get_port()
 
-        session = await self._get_session()
+        session = self._get_session()
         async with session.ws_connect(
             self.url, autoping=False, autoclose=False
         ) as websocket:
@@ -144,20 +150,20 @@ class Client:
 
             recv = await websocket.receive()
 
-            log.debug("Client < %r", recv)
+            _log.debug("Client < %r", recv)
 
             if recv.type == aiohttp.WSMsgType.PING:
-                log.info("Received request to PING")
+                _log.info("Received request to PING")
                 await websocket.ping()
 
                 return await self.request(endpoint, **kwargs)
 
             if recv.type == aiohttp.WSMsgType.PONG:
-                log.info("Received PONG")
+                _log.info("Received PONG")
                 return await self.request(endpoint, **kwargs)
 
             if recv.type == aiohttp.WSMsgType.CLOSED:
-                log.error(
+                _log.error(
                     "WebSocket connection unexpectedly closed. IPC Server is unreachable. Attempting reconnection in 5 seconds."
                 )
 

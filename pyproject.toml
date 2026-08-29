@@ -137,12 +137,19 @@ line-length = 88
 include = ["discord/ext/ipcx/**", "examples/**"]
 
 [tool.ruff.lint]
+select = [
+    "A", "ANN", "ASYNC", "B", "BLE", "C4", "COM", "DTZ", "E",
+    "EM", "ERA", "F", "FA", "FBT", "FIX", "FLY", "FURB", "G", "I", "ICN", "ISC", "LOG", "NPY",
+    "PD", "PERF", "PGH", "PIE", "PLC", "PLE", "PLR", "PLW", "PTH", "PYI",
+    "Q", "Q003", "RET", "RSE", "RUF", "S", "SIM", "SLOT", "T20", "TC", "TD", "TID",
+    "TRY", "UP", "W", "YTT"
+]
 ignore = [
-    "E501", 
-    "N999", 
-    "E402", 
-    "S311",
-    "S101",
+    "E501",     # Ruff suggested format
+    "FBT003",   # Inherently incorrect to enforce this
+    "PLR0913",  # Violations of these are not related to bad code
+    "UP045",    # Explicitly use typing.Optional to not confuse between union operators.
+                # See https://discuss.python.org/t/clarification-for-pep-604-is-foo-int-none-to-replace-all-use-of-foo-optional-int/26945/19
     
     # These are recommended by Ruff if the formatter is to be used: https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
     "W191",
@@ -160,14 +167,17 @@ ignore = [
     "ISC001",
     "ISC002"
 ]
-select = ["E", "F", "N", "ASYNC", "S", "ERA", "I"]
 fixable = ["ALL"]
+unfixable = [
+    "E501",   # Ruff suggests their own formatting
+]
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
 
 [tool.ruff.format]
 docstring-code-format = true
+docstring-code-line-length = 88
 
 [tool.uv]
 package = true
