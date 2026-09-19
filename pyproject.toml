@@ -43,14 +43,14 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "towncrier~=25.8.0",
+    "towncrier~=26.9.0",
     { include-group = "lint" },
     { include-group = "docs" },
     { include-group = "examples" }
 ]
 lint = [
     "ruff~=0.16.0",
-    "ty==0.0.75",
+    "ty==0.0.82",
 ]
 docs = [
     "sphinx==8.1.3",
@@ -61,7 +61,7 @@ docs = [
 examples = [
     "quart==0.20.0",
     "fastapi~=0.141.1",
-    "uvicorn~=0.52.0",
+    "uvicorn~=0.53.0",
     "httptools~=0.8.0",
     "uvloop~=0.22.1 ; sys_platform != 'win32'"
 ]
