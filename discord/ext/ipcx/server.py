@@ -1,3 +1,6 @@
+# Copyright (c) 2020-present Ext-Creators, No767
+# SPDX-License-Identifier: Apache-2.0
+
 import logging
 from collections.abc import Awaitable, Callable
 from typing import ClassVar, Optional, ParamSpec, Protocol, TypeVar
@@ -10,13 +13,14 @@ from .errors import JSONEncodeError
 
 _P = ParamSpec("_P")
 _T = TypeVar("_T", bound=Awaitable)
+_T_co = TypeVar("_T_co", bound=Awaitable, covariant=True)
 
 
-class RouteFunc(Protocol[_P, _T]):
+class RouteFunc(Protocol[_P, _T_co]):
     __name__: str
     __qualname__: str
 
-    def __call__(self, *args: _P.args, **kwargs: _P.kwargs) -> _T: ...
+    def __call__(self, *args: _P.args, **kwargs: _P.kwargs) -> _T_co: ...  # ruff: ignore[D102]
 
 
 AnyRoute = RouteFunc[..., Awaitable]
@@ -29,8 +33,7 @@ def route(
     name: Optional[str] = None,
 ) -> Callable[[RouteFunc[_P, _T]], RouteFunc[_P, _T]]:
     """
-    Used to register a coroutine as an endpoint when you don't have
-    access to an instance of :class:`.Server`
+    Used to register a coroutine as an endpoint when you don't have access to an instance of :class:`.Server`.
 
     Parameters
     ----------
@@ -51,6 +54,21 @@ def route(
 
 
 class IpcServerResponse:
+    """Response given to the IPC server by a client.
+
+    Parameters
+    ----------
+    data: :class:`~aiohttp.web.Request`
+         The response sent by the client.
+
+    Attributes
+    ----------
+    endpoint: str
+        The name of the route being called.
+    length: int
+        The number of fields in the response.
+    """
+
     def __init__(self, data: aiohttp.web.Request) -> None:
         self._json = data
         self.length = len(data)
@@ -61,6 +79,14 @@ class IpcServerResponse:
             setattr(self, key, value)
 
     def to_json(self) -> aiohttp.web.Request:
+        """Returns the raw payload sent by the client.
+
+        .. warning::
+
+            The payload includes the ``Authroization`` header, which contains the secret key utilized between the client and server.
+            Avoid exposing this payload, as anyone with access to the secret key can make authenticated requests to the IPC server.
+
+        """
         return self._json
 
     def __repr__(self) -> str:
@@ -71,8 +97,7 @@ class IpcServerResponse:
 
 
 class Server:
-    """The IPC server. Usually used on the bot process for receiving
-    requests from the client.
+    """The IPC server. Usually used on the bot process for receiving requests from the client.
 
     Attributes
     ----------
@@ -122,8 +147,7 @@ class Server:
     def route(
         self, name: Optional[str] = None
     ) -> Callable[[RouteFunc[_P, _T]], RouteFunc[_P, _T]]:
-        """Used to register a coroutine as an endpoint when you have
-        access to an instance of :class:`.Server`.
+        """Used to register a coroutine as an endpoint when you have access to an instance of :class:`.Server`.
 
         Parameters
         ----------
@@ -281,7 +305,7 @@ class Server:
     async def _start(
         self, application: aiohttp.web.Application, port: int
     ) -> aiohttp.web.AppRunner:
-        """Start both servers"""
+        """Starts both servers."""
         runner = aiohttp.web.AppRunner(application)
         await runner.setup()
 
@@ -290,7 +314,7 @@ class Server:
         return runner
 
     async def _stop(self, app: aiohttp.web.Application) -> None:
-        """Stops the IPC server"""
+        """Stops the IPC server."""
         await app.shutdown()
 
     async def start(self) -> None:

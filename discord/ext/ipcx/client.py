@@ -1,3 +1,6 @@
+# Copyright (c) 2020-present Ext-Creators, No767
+# SPDX-License-Identifier: Apache-2.0
+
 from __future__ import annotations
 
 import asyncio
@@ -58,6 +61,7 @@ class Client:
 
     @property
     def url(self) -> str:
+        """The websocket URL of the IPC server."""
         return f"ws://{self.host}:{self.port or self.multicast_port}"
 
     async def __aenter__(self) -> Self:
@@ -111,7 +115,7 @@ class Client:
         return self.port
 
     async def close(self) -> None:
-        """Properly closes the :class:`aiohttp.ClientSession` session used for connections
+        """Properly closes the :class:`aiohttp.ClientSession` session used for connections.
 
         .. warning::
 
