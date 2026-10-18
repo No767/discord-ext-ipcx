@@ -1,3 +1,6 @@
+# Copyright (c) 2020-present Ext-Creators, No767
+# SPDX-License-Identifier: Apache-2.0
+
 """
 Discord.py IPC Extension
 ~~~~~~~~~~~~~~~~~~~~~~~~

@@ -1,5 +1,9 @@
+# Copyright (c) 2020-present Ext-Creators, No767
+# SPDX-License-Identifier: Apache-2.0
+
 import logging
-from typing import Optional
+from collections.abc import Awaitable, Callable
+from typing import ClassVar, Optional, ParamSpec, Protocol, TypeVar
 
 import aiohttp.web
 
@@ -7,13 +11,29 @@ from discord.ext import commands
 
 from .errors import JSONEncodeError
 
-log = logging.getLogger(__name__)
+_P = ParamSpec("_P")
+_T = TypeVar("_T", bound=Awaitable)
+_T_co = TypeVar("_T_co", bound=Awaitable, covariant=True)
 
 
-def route(name: Optional[str] = None):
+class RouteFunc(Protocol[_P, _T_co]):
+    __name__: str
+    __qualname__: str
+
+    def __call__(self, *args: _P.args, **kwargs: _P.kwargs) -> _T_co: ...  # ruff: ignore[D102]
+
+
+AnyRoute = RouteFunc[..., Awaitable]
+
+
+_log = logging.getLogger(__name__)
+
+
+def route(
+    name: Optional[str] = None,
+) -> Callable[[RouteFunc[_P, _T]], RouteFunc[_P, _T]]:
     """
-    Used to register a coroutine as an endpoint when you don't have
-    access to an instance of :class:`.Server`
+    Used to register a coroutine as an endpoint when you don't have access to an instance of :class:`.Server`.
 
     Parameters
     ----------
@@ -22,7 +42,7 @@ def route(name: Optional[str] = None):
         used.
     """
 
-    def decorator(func):
+    def decorator(func: RouteFunc[_P, _T]) -> RouteFunc[_P, _T]:
         if not name:
             Server.ROUTES[func.__name__] = func
         else:
@@ -34,7 +54,22 @@ def route(name: Optional[str] = None):
 
 
 class IpcServerResponse:
-    def __init__(self, data: aiohttp.web.Request):
+    """Response given to the IPC server by a client.
+
+    Parameters
+    ----------
+    data: :class:`~aiohttp.web.Request`
+         The response sent by the client.
+
+    Attributes
+    ----------
+    endpoint: str
+        The name of the route being called.
+    length: int
+        The number of fields in the response.
+    """
+
+    def __init__(self, data: aiohttp.web.Request) -> None:
         self._json = data
         self.length = len(data)
 
@@ -43,19 +78,26 @@ class IpcServerResponse:
         for key, value in data["data"].items():
             setattr(self, key, value)
 
-    def to_json(self):
+    def to_json(self) -> aiohttp.web.Request:
+        """Returns the raw payload sent by the client.
+
+        .. warning::
+
+            The payload includes the ``Authroization`` header, which contains the secret key utilized between the client and server.
+            Avoid exposing this payload, as anyone with access to the secret key can make authenticated requests to the IPC server.
+
+        """
         return self._json
 
-    def __repr__(self):
-        return "<IpcServerResponse length={0.length}>".format(self)
+    def __repr__(self) -> str:
+        return f"<IpcServerResponse length={self.length}>"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.__repr__()
 
 
 class Server:
-    """The IPC server. Usually used on the bot process for receiving
-    requests from the client.
+    """The IPC server. Usually used on the bot process for receiving requests from the client.
 
     Attributes
     ----------
@@ -68,13 +110,13 @@ class Server:
     secret_key: str
         A secret key. Used for authentication and should be the same as
         your client's secret key.
-    do_multicast: bool
-        Turn multicasting on/off. Defaults to True
     multicast_port: int
         The port to run the multicasting server on. Defaults to 20000
+    do_multicast: bool
+        Turn multicasting on/off. Defaults to True
     """
 
-    ROUTES = {}
+    ROUTES: ClassVar[dict[str, AnyRoute]] = {}
 
     def __init__(
         self,
@@ -82,9 +124,10 @@ class Server:
         host: str = "localhost",
         port: int = 8765,
         secret_key: Optional[str] = None,
-        do_multicast: bool = True,
         multicast_port: int = 20000,
-    ):
+        *,
+        do_multicast: bool = True,
+    ) -> None:
         self.bot = bot
         self.loop = bot.loop
 
@@ -99,19 +142,20 @@ class Server:
         self.do_multicast = do_multicast
         self.multicast_port = multicast_port
 
-        self.endpoints = {}
+        self.endpoints: dict[str, AnyRoute] = {}
 
-    def route(self, name=None):
-        """Used to register a coroutine as an endpoint when you have
-        access to an instance of :class:`.Server`.
+    def route(
+        self, name: Optional[str] = None
+    ) -> Callable[[RouteFunc[_P, _T]], RouteFunc[_P, _T]]:
+        """Used to register a coroutine as an endpoint when you have access to an instance of :class:`.Server`.
 
         Parameters
         ----------
-        name: str
+        name: Optional[str]
             The endpoint name. If not provided the method name will be used.
         """
 
-        def decorator(func):
+        def decorator(func: RouteFunc[_P, _T]) -> RouteFunc[_P, _T]:
             if not name:
                 self.endpoints[func.__name__] = func
             else:
@@ -121,13 +165,15 @@ class Server:
 
         return decorator
 
-    def update_endpoints(self):
+    def update_endpoints(self) -> None:
         """Called internally to update the server's endpoints for cog routes."""
         self.endpoints = {**self.endpoints, **self.ROUTES}
 
-        self.ROUTES = {}
+        self.ROUTES.clear()
 
-    async def handle_accept(self, request: aiohttp.web.Request):
+    async def handle_accept(
+        self, request: aiohttp.web.Request
+    ) -> aiohttp.web.WebSocketResponse:
         """Handles websocket requests from the client process.
 
         Parameters
@@ -143,63 +189,60 @@ class Server:
         async for message in websocket:
             request = message.json()
 
-            log.debug("IPC Server < %r", request)
+            _log.debug("IPC Server < %r", request)
 
             endpoint = request.get("endpoint")
 
             headers = request.get("headers")
 
             if not headers or headers.get("Authorization") != self.secret_key:
-                log.info(
+                _log.info(
                     "Received unauthorized request (Invalid or no token provided)."
                 )
                 response = {
                     "error": "Invalid or no token provided.",
                     "code": 403,
                 }
+            elif not endpoint or endpoint not in self.endpoints:
+                _log.info("Received invalid request (Invalid or no endpoint given).")
+                response = {
+                    "error": "Invalid or no endpoint given.",
+                    "code": 400,
+                }
             else:
-                if not endpoint or endpoint not in self.endpoints:
-                    log.info("Received invalid request (Invalid or no endpoint given).")
-                    response = {
-                        "error": "Invalid or no endpoint given.",
-                        "code": 400,
-                    }
-                else:
-                    server_response = IpcServerResponse(request)
-                    try:
-                        attempted_cls = self.bot.cogs.get(
-                            self.endpoints[endpoint].__qualname__.split(".")[0]
-                        )
+                server_response = IpcServerResponse(request)
+                try:
+                    attempted_cls = self.bot.cogs.get(
+                        self.endpoints[endpoint].__qualname__.split(".")[0]
+                    )
 
-                        if attempted_cls:
-                            arguments = (attempted_cls, server_response)
-                        else:
-                            arguments = (server_response,)
-                    except AttributeError:
-                        # Support base Client
+                    if attempted_cls:
+                        arguments = (attempted_cls, server_response)
+                    else:
                         arguments = (server_response,)
+                except AttributeError:
+                    # Support base Client
+                    arguments = (server_response,)
 
-                    try:
-                        ret = await self.endpoints[endpoint](*arguments)
-                        response = ret
-                    except Exception as error:
-                        log.error(
-                            "Received error while executing %r with %r",
-                            endpoint,
-                            request,
-                        )
-                        self.bot.dispatch("ipc_error", endpoint, error)
+                try:
+                    ret = await self.endpoints[endpoint](*arguments)
+                    response = ret
+                except Exception as error:  # noqa: BLE001
+                    _log.exception(
+                        "Received error while executing %r with %r",
+                        endpoint,
+                        request,
+                    )
+                    self.bot.dispatch("ipc_error", endpoint, error)
 
-                        response = {
-                            "error": "IPC route raised error of type {}".format(
-                                type(error).__name__
-                            ),
-                            "code": 500,
-                        }
+                    response = {
+                        "error": f"IPC route raised error of type {type(error).__name__}",
+                        "code": 500,
+                    }
 
             try:
                 await websocket.send_json(response)
-                log.debug("IPC Server > %r", response)
+                _log.debug("IPC Server > %r", response)
             except TypeError as error:
                 if str(error).startswith("Object of type") and str(error).endswith(
                     "is not JSON serializable"
@@ -209,17 +252,20 @@ class Server:
                         " If you are trying to send a discord.py object,"
                         " please only send the data you need."
                     )
-                    log.error(error_response)
+                    _log.exception(error_response)
 
                     response = {"error": error_response, "code": 500}
 
                     await websocket.send_json(response)
-                    log.debug("IPC Server > %r", response)
+                    _log.debug("IPC Server > %r", response)
 
-                    raise JSONEncodeError(error_response)
+                    raise JSONEncodeError(error_response) from error
             return websocket
+        return websocket
 
-    async def handle_multicast(self, request: aiohttp.web.Request):
+    async def handle_multicast(
+        self, request: aiohttp.web.Request
+    ) -> aiohttp.web.WebSocketResponse:
         """Handles multicasting websocket requests from the client.
 
         Parameters
@@ -227,14 +273,14 @@ class Server:
         request: :class:`~aiohttp.web.Request`
             The request made by the client, parsed by aiohttp.
         """
-        log.debug("Initiating Multicast Server.")
+        _log.debug("Initiating Multicast Server.")
         websocket = aiohttp.web.WebSocketResponse()
         await websocket.prepare(request)
 
         async for message in websocket:
             request = message.json()
 
-            log.debug("Multicast Server < %r", request)
+            _log.debug("Multicast Server < %r", request)
 
             headers = request.get("headers")
 
@@ -250,15 +296,16 @@ class Server:
                     "code": 200,
                 }
 
-            log.debug("Multicast Server > %r", response)
+            _log.debug("Multicast Server > %r", response)
 
             await websocket.send_json(response)
             return websocket
+        return websocket
 
     async def _start(
         self, application: aiohttp.web.Application, port: int
     ) -> aiohttp.web.AppRunner:
-        """Start both servers"""
+        """Starts both servers."""
         runner = aiohttp.web.AppRunner(application)
         await runner.setup()
 
@@ -267,7 +314,7 @@ class Server:
         return runner
 
     async def _stop(self, app: aiohttp.web.Application) -> None:
-        """Stops the IPC server"""
+        """Stops the IPC server."""
         await app.shutdown()
 
     async def start(self) -> None:

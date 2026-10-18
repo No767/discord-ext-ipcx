@@ -30,8 +30,15 @@ intersphinx_mapping = {
     "discord": ("https://discordpy.readthedocs.io/en/latest", None),
 }
 
+_PY_CLASS = "py:class"
+
 nitpick_ignore = {
-    ("py:class", "aiohttp.web_request.Request"),
+    (_PY_CLASS, "aiohttp.web_request.Request"),
+    (_PY_CLASS, "aiohttp.web_ws.WebSocketResponse"),
+    (_PY_CLASS, "discord.ext.ipcx.client._T"),
+    (_PY_CLASS, "discord.ext.ipcx.server._T"),
+    (_PY_CLASS, "discord.ext.ipcx.server.RouteFunc"),
+    (_PY_CLASS, "_P"),
 }
 
 # -- Options for HTML output -------------------------------------------------

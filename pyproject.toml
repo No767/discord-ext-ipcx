@@ -12,10 +12,10 @@ readme = "README.md"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
 keywords = [
-    "discord.py", 
-    "asyncio", 
+    "discord.py",
+    "asyncio",
     "networking",
-    "discord-ext-ipcx", 
+    "discord-ext-ipcx",
     "discord-ext-ipc"
 ]
 classifiers = [
@@ -120,7 +120,7 @@ package_dir = "discord/ext"
 [tool.ty.src]
 include = ["discord/ext/ipcx/**", "examples/**"]
 exclude = [
-    "__pycache__", 
+    "__pycache__",
     "docs"
 ]
 
@@ -134,16 +134,27 @@ unresolved-attribute = "ignore"
 
 [tool.ruff]
 line-length = 88
-include = ["discord/ext/ipcx/**", "examples/**"]
+include = ["discord/ext/ipcx/*.py", "examples/**"]
 
 [tool.ruff.lint]
+select = [
+    "A", "ANN", "ASYNC", "B", "BLE", "C4", "COM", "CPY", "D", "DTZ", "E",
+    "EM", "ERA", "EXE", "F", "FA", "FAST", "FBT", "FIX", "FLY", "FURB", "G", "I", "ICN", "ISC", "LOG", "N",
+    "PERF", "PGH", "PIE", "PLC", "PLE", "PLR", "PLW", "PTH", "PYI",
+    "Q", "RET", "RSE", "RUF", "S", "SIM", "SLF", "SLOT", "T10", "T20", "TC", "TD", "TID",
+    "TRY", "UP", "W", "YTT"
+]
 ignore = [
-    "E501", 
-    "N999", 
-    "E402", 
-    "S311",
-    "S101",
-    
+    "D100",     # Unnecessary to document
+    "D101",     # Not all need to be documented
+    "D105",     # Incorrect to enforce this
+    "D401",     # Not interested to police grammar
+    "E501",     # Ruff suggested format
+    "FBT003",   # Inherently incorrect to enforce this
+    "PLR0913",  # Violations of these are not related to bad code
+    "UP045",    # Explicitly use typing.Optional to not confuse between union operators.
+                # See https://discuss.python.org/t/clarification-for-pep-604-is-foo-int-none-to-replace-all-use-of-foo-optional-int/26945/19
+
     # These are recommended by Ruff if the formatter is to be used: https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
     "W191",
     "E111",
@@ -155,19 +166,31 @@ ignore = [
     "Q001",
     "Q002",
     "Q003",
+    "Q004",
     "COM812",
     "COM819",
     "ISC001",
     "ISC002"
 ]
-select = ["E", "F", "N", "ASYNC", "S", "ERA", "I"]
 fixable = ["ALL"]
+unfixable = [
+    "E501",   # Ruff suggests their own formatting
+]
+
+
+[tool.ruff.lint.per-file-ignores]
+"discord/ext/ipcx/__init__.py" = ["D205", "D400"]
+"examples/**" = ["CPY", "D"]
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
 
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
 [tool.ruff.format]
 docstring-code-format = true
+docstring-code-line-length = 88
 
 [tool.uv]
 package = true
