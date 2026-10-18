@@ -15,7 +15,7 @@
     ],
     "automerge": true
   },
-  "ignoreDeps": ["sphinx", "sphinx-autobuild"],
+  "ignoreDeps": ["sphinx", "sphinx-autobuild", "quart"],
   "packageRules": [
     {
       "matchManagers": [
