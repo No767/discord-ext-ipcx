@@ -60,7 +60,7 @@ docs = [
 ]
 examples = [
     "quart==0.20.0",
-    "fastapi~=0.143.5",
+    "fastapi~=0.146.0",
     "uvicorn~=0.54.0",
     "httptools~=0.9.0",
     "uvloop~=0.23.0; sys_platform != 'win32'"
