@@ -18,7 +18,9 @@ if TYPE_CHECKING:
 if sys.version_info >= (3, 13):
     from typing import Self, TypeVar
 else:
-    from typing_extensions import Self, TypeVar
+    from typing import Self
+
+    from typing_extensions import TypeVar
 
 
 _T = TypeVar("_T", default=Any)

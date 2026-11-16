@@ -10,8 +10,7 @@ from discord.ext import ipcx
 
 if TYPE_CHECKING:
     from collections.abc import AsyncGenerator
-
-    from typing_extensions import Self
+    from typing import Self
 
 
 SECRET_KEY = ""  # This key must be the exact same on the bot
