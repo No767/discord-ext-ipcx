@@ -6,7 +6,9 @@
     "abandonments:recommended",
     "mergeConfidence:all-badges"
   ],
-  "dependencyDashboard": false,
+  "dependencyDashboard": {
+    "enabled": false
+  },
   "separateMajorMinor": false,
   "lockFileMaintenance": {
     "enabled": true,
@@ -20,7 +22,6 @@
     {
       "matchManagers": [
         "pep621",
-        "uv",
         "mise"
       ],
       "groupName": "uv dependencies",
